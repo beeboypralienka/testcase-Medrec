@@ -113,49 +113,49 @@ public class PasienService {
         }
     }
 
-    public String serviceGetNamaByNoRm(String noRm){
+    public List serviceGetPasienByNo(String noRm){
         try{
-            return pi.getNamaPasienByNo(noRm);
+            return pi.getPasienByNo(noRm);
         }catch(SQLException se){
             Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
 
-    public String serviceGetJenkelByNoRm(String noRm){
-        try{
-            return pi.getJenkelPasienByNo(noRm);
-        }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
-            return null;
-        }
-    }
-
-    public String serviceGetTglLahirByNoRm(String noRm){
-        try{
-            return pi.getTglLahirPasienByNo(noRm);
-        }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
-            return null;
-        }
-    }
-
-    public String serviceGetAgamaByNoRm(String noRm){
-        try{
-            return pi.getAgamaPasienByNo(noRm);
-        }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
-            return null;
-        }
-    }
-
-    public String serviceGetAlamatByNoRm(String noRm){
-        try{
-            return pi.getAlamatPasienByNo(noRm);
-        }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
-            return null;
-        }
-    }
+//    public String serviceGetJenkelByNoRm(String noRm){
+//        try{
+//            return pi.getJenkelPasienByNo(noRm);
+//        }catch(SQLException se){
+//            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+//            return null;
+//        }
+//    }
+//
+//    public String serviceGetTglLahirByNoRm(String noRm){
+//        try{
+//            return pi.getTglLahirPasienByNo(noRm);
+//        }catch(SQLException se){
+//            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+//            return null;
+//        }
+//    }
+//
+//    public String serviceGetAgamaByNoRm(String noRm){
+//        try{
+//            return pi.getAgamaPasienByNo(noRm);
+//        }catch(SQLException se){
+//            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+//            return null;
+//        }
+//    }
+//
+//    public String serviceGetAlamatByNoRm(String noRm){
+//        try{
+//            return pi.getAlamatPasienByNo(noRm);
+//        }catch(SQLException se){
+//            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+//            return null;
+//        }
+//    }
 
 }

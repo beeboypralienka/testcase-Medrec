@@ -32,9 +32,21 @@ public class TindakanDao implements TindakanInterface{
             "SELECT t.no_tindakan, t.nm_tindakan, s.nm_spesialis, t.ket_tindakan "
             + "FROM tindakan t, spesialis s "
             + "WHERE t.tindakan_spesialis = s.id_spesialis ORDER BY t.no_tindakan ASC";
-    private final String getAllByNoTindakan = "SELECT * FROM tindakan WHERE no_tindakan LIKE ?";
-    private final String getAllByNmTindakan = "SELECT * FROM tindakan WHERE nm_tindakan LIKE ?";
+    private final String getAllByNoTindakan = 
+            "SELECT t.no_tindakan, t.nm_tindakan, s.nm_spesialis, t.ket_tindakan "
+            + "FROM tindakan t, spesialis s "
+            + "WHERE t.tindakan_spesialis = s.id_spesialis AND t.no_tindakan LIKE ?";
+    private final String getAllByNmTindakan =
+             "SELECT t.no_tindakan, t.nm_tindakan, s.nm_spesialis, t.ket_tindakan "
+            + "FROM tindakan t, spesialis s "
+            + "WHERE t.tindakan_spesialis = s.id_spesialis AND t.nm_tindakan LIKE ?";
     private final String getMaxNoTindakan = "SELECT MAX(SUBSTR(no_tindakan,6,8))+1 FROM tindakan";
+    private final String getAllDataTindakanByNo = "SELECT * FROM tindakan WHERE no_tindakan = ?";
+
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
 
     public TindakanDao(Connection connection){
         this.connection = connection;
@@ -45,13 +57,15 @@ public class TindakanDao implements TindakanInterface{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(insertTindakan);
             ps.setString(1, t.getNoTindakan());
             ps.setString(2, t.getNmTindakan());
-            ps.setString(3, t.getTndkSpesialis());
+            ps.setString(3, t.getTindakanSpesialis());
             ps.setString(4, t.getKetTindakan());
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data tindakan berhasil ditambah!", "Insert Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data tindakan berhasil ditambah!", "Insert Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            hasilInsert = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(), "Insert Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(), "Insert Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -59,14 +73,16 @@ public class TindakanDao implements TindakanInterface{
         try{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(updateTindakan);
             ps.setString(1, t.getNmTindakan());
-            ps.setString(2, t.getTndkSpesialis());
+            ps.setString(2, t.getTindakanSpesialis());
             ps.setString(3, t.getKetTindakan());
             ps.setString(4, noTindakan);
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data tindakan berhasil diubah", "Update Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data tindakan berhasil diubah", "Update Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            hasilUpdate = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(), "Update Tindakan Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(), "Update Tindakan Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -76,9 +92,11 @@ public class TindakanDao implements TindakanInterface{
             ps.setString(1, noTindakan);
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data tindakan berhasil dihapus!", "Delete Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data tindakan berhasil dihapus!", "Delete Tindakan", JOptionPane.INFORMATION_MESSAGE);
+            hasilDelete = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(), "Delete Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(), "Delete Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -91,15 +109,17 @@ public class TindakanDao implements TindakanInterface{
                 Tindakan t = new Tindakan();
                 t.setNoTindakan(rs.getString("no_tindakan"));
                 t.setNmTindakan(rs.getString("nm_tindakan"));
-                t.setTndkSpesialis(rs.getString("nm_spesialis"));
+                t.setTindakanSpesialis(rs.getString("nm_spesialis"));
                 t.setKetTindakan(rs.getString("ket_tindakan"));
                 list.add(t);
             }
             rs.close();
             s.close();
+            hasilGetAll = "ok";
             return list;
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(), "Get All Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(), "Get All Tindakan Gagal", JOptionPane.ERROR_MESSAGE);
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
@@ -115,7 +135,7 @@ public class TindakanDao implements TindakanInterface{
                 Tindakan t = new Tindakan();
                 t.setNoTindakan(rs.getString("no_tindakan"));
                 t.setNmTindakan(rs.getString("nm_tindakan"));
-                t.setTndkSpesialis(rs.getString("nm_spesialis"));
+                t.setTindakanSpesialis(rs.getString("nm_spesialis"));
                 t.setKetTindakan(rs.getString("ket_tindakan"));
                 list.add(t);
             }
@@ -139,7 +159,7 @@ public class TindakanDao implements TindakanInterface{
                 Tindakan t = new Tindakan();
                 t.setNoTindakan(rs.getString("no_tindakan"));
                 t.setNmTindakan(rs.getString("nm_tindakan"));
-                t.setTndkSpesialis(rs.getString("nm_spesialis"));
+                t.setTindakanSpesialis(rs.getString("nm_spesialis"));
                 t.setKetTindakan(rs.getString("ket_tindakan"));
                 list.add(t);
             }
@@ -160,7 +180,9 @@ public class TindakanDao implements TindakanInterface{
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 max = rs.getString(1);
-                if (max.length() == 1) {
+                if(max == null){
+                    hasil = "0001";
+                } else if (max.length() == 1) {
                     hasil = "000" + max;
                 } else if (max.length() == 2) {
                     hasil = "00" + max;
@@ -174,6 +196,30 @@ public class TindakanDao implements TindakanInterface{
         } catch (Throwable t) {
             JOptionPane.showMessageDialog(null, t.getMessage(),
                     "Get Max Nomor Tindakan Gagal!", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    public List getAllDataTindakanByNo(String noTindakan) throws SQLException {
+        try{
+            PreparedStatement ps = null;
+            List list = new ArrayList();
+            ps = (PreparedStatement) connection.prepareStatement(getAllDataTindakanByNo);
+            ps.setString(1, noTindakan);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Tindakan t = new Tindakan();
+                t.setNoTindakan(rs.getString("no_tindakan"));
+                t.setNmTindakan(rs.getString("nm_tindakan"));
+                t.setTindakanSpesialis(rs.getString("tindakan_spesialis"));
+                t.setKetTindakan(rs.getString("ket_tindakan"));
+                list.add(t);
+            }
+            ps.close();
+            rs.close();
+            return list;
+        }catch(SQLException se){
+            JOptionPane.showMessageDialog(null, se.getMessage(), "Get All Tindakan By Nomor Gagal", JOptionPane.INFORMATION_MESSAGE);
             return null;
         }
     }

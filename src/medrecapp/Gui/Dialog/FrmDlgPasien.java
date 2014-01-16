@@ -12,6 +12,8 @@ package medrecapp.Gui.Dialog;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import medrecapp.Dao.PasienDao;
 import medrecapp.Entity.Pasien;
 import medrecapp.Gui.Internal.FrmIntListPasien;
 import medrecapp.Services.PasienService;
@@ -252,12 +254,24 @@ public class FrmDlgPasien extends javax.swing.JDialog {
         if (noRm == null) {
             p.setNoRm(ps.serviceGetMaxNoRm());
             ps.serviceInsertPasien(p);
+            if(PasienDao.hasilInsert.equals("ok")){
+                JOptionPane.showMessageDialog(null, "Data pasien berhasil ditambah!", "Insert Pasien", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, PasienDao.hasilInsert,"Insert Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             ps.serviceUpdatePasien(p, noRm);
+            if(PasienDao.hasilUpdate.equals("ok")){
+                JOptionPane.showMessageDialog(null, "Data pasien berhasil diubah!", "Update Pasien", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, PasienDao.hasilUpdate,"Update Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            }
         }
 
 
-        dispose();
+        
 }//GEN-LAST:event_btnSimpanActionPerformed
 
     /**

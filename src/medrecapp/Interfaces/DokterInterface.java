@@ -33,6 +33,5 @@ public interface DokterInterface {
     public String[] getAllNamaDokter(String dokter, int total)throws SQLException;
 
     // Method untuk mengambil No Dokter dari pilihan nama dokter di combo box
-    public String getNoDokterByNama(String nama)throws SQLException;
-    
+    public String getNoDokterByNama(String nama)throws SQLException;    
 }

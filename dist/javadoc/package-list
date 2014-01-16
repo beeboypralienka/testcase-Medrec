@@ -1,0 +1,8 @@
+medrecapp
+medrecapp.Dao
+medrecapp.Entity
+medrecapp.Gui
+medrecapp.Interfaces
+medrecapp.KoneksiDatabase
+medrecapp.Services
+medrecapp.TabelModel

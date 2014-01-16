@@ -29,10 +29,10 @@ public interface PasienInterface {
     public List getAllByNama(String nmPasien)throws SQLException;
 
     // Mengambil satu data pasien berdasarkan no rm
-    public String getNamaPasienByNo(String noRm)throws SQLException;
-    public String getJenkelPasienByNo(String noRm)throws SQLException;
-    public String getTglLahirPasienByNo(String noRm)throws SQLException;
-    public String getAgamaPasienByNo(String noRm)throws SQLException;
-    public String getAlamatPasienByNo(String noRm)throws SQLException;
+    public List getPasienByNo(String noRm)throws SQLException;
+//    public String getJenkelPasienByNo(String noRm)throws SQLException;
+//    public String getTglLahirPasienByNo(String noRm)throws SQLException;
+//    public String getAgamaPasienByNo(String noRm)throws SQLException;
+//    public String getAlamatPasienByNo(String noRm)throws SQLException;
 
 }

@@ -14,6 +14,8 @@ import com.mysql.jdbc.Connection;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import medrecapp.Dao.PasienDao;
 import medrecapp.Entity.Pasien;
 import medrecapp.Services.PasienService;
 
@@ -33,9 +35,10 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
         initComponents();
 
         txtAlamat.addKeyListener(new KeyAdapter() {
+
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode()==KeyEvent.VK_TAB){
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_TAB) {
                     txtAlamat.transferFocus();
                     e.consume();
                 }
@@ -51,7 +54,7 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
         //tabelModelPasien.setData(ps.serviceGetAllPasien());
         txtNmPasien.requestFocus();
 
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -92,7 +95,7 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
         pilihAgama.setName("pilihAgama"); // NOI18N
 
         txtAlamat.setColumns(20);
-        txtAlamat.setFont(new java.awt.Font("Tahoma", 0, 11));
+        txtAlamat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         txtAlamat.setLineWrap(true);
         txtAlamat.setRows(5);
         txtAlamat.setName("txtAlamat"); // NOI18N
@@ -125,9 +128,11 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
         grupRadio.add(radioLaki);
         radioLaki.setSelected(true);
         radioLaki.setText("Laki-laki");
+        radioLaki.setName("radioLaki"); // NOI18N
 
         grupRadio.add(radioPerempuan);
         radioPerempuan.setText("Perempuan");
+        radioPerempuan.setName("radioPerempuan"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -226,7 +231,7 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -241,31 +246,37 @@ public class FrmIntPasien extends javax.swing.JInternalFrame {
         tglLahir = txtTglLahir.getText();
         agama = pilihAgama.getSelectedItem().toString();
         alamat = txtAlamat.getText();
-        if(radioLaki.isSelected()){
+        if (radioLaki.isSelected()) {
             p.setJkPas("L");
             jk = "Laki-laki";
-        }else{
+        } else {
             p.setJkPas("P");
             jk = "Perempuan";
         }
-        
-        FrmIntPendaftaran fip = new FrmIntPendaftaran();        
+
+        FrmIntPendaftaran fip = new FrmIntPendaftaran();
         p.setNoRm(ID);
-        p.setNmPas(nama);        
+        p.setNmPas(nama);
         p.setTglLahir(tglLahir);
         p.setAgama(agama);
-        p.setAlamatPas(alamat);        
-        ps.serviceInsertPasien(p);        
+        p.setAlamatPas(alamat);
+        ps.serviceInsertPasien(p);
 
-        Dimension parentSize = this.getParent().getSize();
-        Dimension childSize = fip.getSize();
-        fip.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
-        this.getParent().add(fip);
-        this.dispose();
-        fip.show();
-        fip.toFront();
-        
-        
+        if (PasienDao.hasilInsert.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data pasien berhasil ditambah!", "Insert Pasien", JOptionPane.INFORMATION_MESSAGE);            
+            Dimension parentSize = this.getParent().getSize();
+            Dimension childSize = fip.getSize();
+            fip.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
+            this.getParent().add(fip);
+            this.dispose();
+            fip.show();
+            fip.toFront();
+        } else {
+            JOptionPane.showMessageDialog(null, PasienDao.hasilInsert, "Insert Pasien Gagal!", JOptionPane.ERROR_MESSAGE);
+            ID = "";
+            jk = "";
+        }
+
     }//GEN-LAST:event_btnInsertActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInsert;

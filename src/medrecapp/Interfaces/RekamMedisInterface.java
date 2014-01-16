@@ -20,9 +20,6 @@ public interface RekamMedisInterface {
 
     // Ubah Status Pasien, masuk ke Poliklinik
     public void updatePasienMasukPoli(String noDaftar)throws SQLException;
-
-//    public void deleteRekamMedis(String noDaftar)throws SQLException;
-//    public List getAllRekamMedis()throws SQLException;
     
     // Menampilkan rekam medis berdasarkan Nomor Pendaftaran
     public List getRekamMedisByNoDaftar(String noDaftar)throws SQLException;
@@ -36,7 +33,22 @@ public interface RekamMedisInterface {
     // Menampilkan pasien poliklinik yang "Antri" berdasarkan Poliklinik dan Tanggal
     public List getRekamMedisPasienAntri(String poli, String tanggal)throws SQLException;
 
-    // Menampilkan pasien poliklinik berdasarkan Poliklinik dan Tanggal
+    // Menampilkan pasien poliklinik yang != "Antri" berdasarkan Poliklinik dan Tanggal
     public List getRekamMedisPasienPoli(String poli, String tanggal)throws SQLException;
+
+    // Update data pemeriksaan awal
+    public void updatePemeriksaanAwal(RekamMedis rm, String noDaftar)throws SQLException;
+
+    // Update data pemeriksaan lanjutan
+    public void updatePemeriksaanLanjutan(RekamMedis rm, String noDaftar)throws SQLException;
+
+    // Delete rekam medis untuk method tearDown()
+    public void deleteRekamMedis()throws SQLException;
+
+    // Get ALL atribut di tabel rekam medis By Nomor Pendaftaran
+    public List getAllAtributRekmedByNoDaftar(String noDaftar)throws SQLException;
+
+    // Get ALL attribut dari tabel rekam medis
+    public List getAllAtributRekmed()throws SQLException;
     
 }

@@ -58,7 +58,7 @@ public class TabelModelTindakan extends AbstractTableModel{
             case 1:
                 return list.get(rowIndex).getNmTindakan();
             case 2:
-                return list.get(rowIndex).getTndkSpesialis();
+                return list.get(rowIndex).getTindakanSpesialis();
             case 3:
                 return list.get(rowIndex).getKetTindakan();
             default:

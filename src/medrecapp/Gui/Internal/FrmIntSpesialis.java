@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.SpesialisDao;
 import medrecapp.Entity.Spesialis;
 import medrecapp.Services.SpesialisService;
 import medrecapp.TabelModel.TabelModelSpesialis;
@@ -37,6 +38,11 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         initComponents();
         tabelSpesialis.setModel(tabelModelSpesialis);
         tabelModelSpesialis.setData(ss.serviceGetAllSpesialis());
+
+        // cek hasil hasilGetAll
+        if (!SpesialisDao.hasilGetAll.equals("ok")) {
+            JOptionPane.showMessageDialog(null, SpesialisDao.hasilGetAll, "Get All Spesialis Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         tabelSpesialis.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -51,14 +57,22 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
                     txtIdSpesialis.setText(ID);
                     txtNmSpesialis.setText(nama);
                     txtTarifSpesialis.setText(tarif);
-                    
+
                     btnInsert.setEnabled(false);
                     btnUpdate.setEnabled(true);
                     btnDelete.setEnabled(true);
                 }
             }
         });
-        clear();
+
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+
+        txtIdSpesialis.setText("");
+        txtNmSpesialis.setText("");
+        txtTarifSpesialis.setText("");
+        txtIdSpesialis.requestFocus();
     }
 
     public final void sesuaikan() {
@@ -81,7 +95,7 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         btnInsert.setEnabled(true);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
-        
+
         txtIdSpesialis.setText("");
         txtNmSpesialis.setText("");
         txtTarifSpesialis.setText("");
@@ -135,7 +149,12 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Tarif Konsul");
 
+        txtNmSpesialis.setName("txtNamaSpesialis"); // NOI18N
+
         txtTarifSpesialis.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTarifSpesialis.setName("txtTarifKonsul"); // NOI18N
+
+        txtIdSpesialis.setName("txtIDSpesialis"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -185,6 +204,7 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         );
 
         btnInsert.setText("Insert");
+        btnInsert.setName("btnInsert"); // NOI18N
         btnInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertActionPerformed(evt);
@@ -192,6 +212,7 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.setName("btnUpdate"); // NOI18N
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -223,6 +244,7 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelSpesialis.setName("tabelSpesialis"); // NOI18N
         jScrollPane1.setViewportView(tabelSpesialis);
 
         jLabel7.setText("Masukkan ID / Nama Spesialis:");
@@ -269,7 +291,7 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -282,15 +304,17 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
-        try {
-            Spesialis s = new Spesialis();
-            s.setIdSpesialis(txtIdSpesialis.getText());
-            s.setNmSpesialis(txtNmSpesialis.getText());
-            s.setTarifKonsul(Integer.parseInt(txtTarifSpesialis.getText()));
-            ss.serviceInsertSpesialis(s);
+        Spesialis s = new Spesialis();
+        s.setIdSpesialis(txtIdSpesialis.getText());
+        s.setNmSpesialis(txtNmSpesialis.getText());
+        s.setTarifKonsul(Integer.parseInt(txtTarifSpesialis.getText()));
+        ss.serviceInsertSpesialis(s);
+
+        if (SpesialisDao.hasilInsert.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data spesialis berhasil ditambah!", "Insert Spesialis", JOptionPane.INFORMATION_MESSAGE);
             clear();
-        } catch (Throwable t) {
-            JOptionPane.showMessageDialog(rootPane, t.getMessage(),"Warning Insert",JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, SpesialisDao.hasilInsert, "Insert Spesialis Gagal!", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnInsertActionPerformed
@@ -300,8 +324,18 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         Spesialis s = new Spesialis();
         s.setNmSpesialis(txtNmSpesialis.getText());
         s.setTarifKonsul(Integer.parseInt(txtTarifSpesialis.getText()));
-        ss.serviceUpdateSpesialis(s, txtIdSpesialis.getText());
-        clear();
+
+        int row = tabelSpesialis.getSelectedRow();
+        if (row != -1) {
+            ss.serviceUpdateSpesialis(s, tabelSpesialis.getValueAt(row, 0).toString());
+
+            if (SpesialisDao.hasilUpdate.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data spesialis berhasil diubah!", "Update Spesialis", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, SpesialisDao.hasilUpdate, "Update Spesialis Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -310,9 +344,23 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         if (row == -1) {
             return;
         }
-        ss.serviceDeleteSpesialis(tabelSpesialis.getValueAt(row, 0).toString());
-        //ds.serviceDeleteDokter(tabelModelDokter.getDokter(row).getIdDokter());
-        clear();
+
+        int pilih = JOptionPane.showConfirmDialog(rootPane,
+                "Yakin ingin mengahapus data yang dipilih?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (pilih == JOptionPane.OK_OPTION) {
+
+            ss.serviceDeleteSpesialis(tabelSpesialis.getValueAt(row, 0).toString());
+
+            if (SpesialisDao.hasilDelete.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data spesialis berhasil dihapus!", "Delete Spesialis", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, SpesialisDao.hasilDelete, "Delete Spesialis Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRefreshActionPerformed
@@ -334,7 +382,6 @@ public class FrmIntSpesialis extends javax.swing.JInternalFrame {
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }//GEN-LAST:event_txtCariKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRefresh;
     private javax.swing.JButton btnDelete;

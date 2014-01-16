@@ -18,6 +18,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import medrecapp.Dao.PasienDao;
+import medrecapp.Dao.RekamMedisDao;
 import medrecapp.Entity.RekamMedis;
 import medrecapp.Services.DokterService;
 import medrecapp.Services.JaminanService;
@@ -27,6 +29,7 @@ import medrecapp.Services.SpesialisService;
 import medrecapp.Services.StafService;
 import medrecapp.TabelModel.TabelModelDokter;
 import medrecapp.TabelModel.TabelModelJaminan;
+import medrecapp.TabelModel.TabelModelPasien;
 import medrecapp.TabelModel.TabelModelSpesialis;
 import medrecapp.TabelModel.TabelModelStaf;
 
@@ -40,13 +43,13 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
     PasienService ps = new PasienService();
     SpesialisService ss = new SpesialisService();
     DokterService ds = new DokterService();
-    JaminanService js = new JaminanService();    
+    JaminanService js = new JaminanService();
     StafService sfs = new StafService();
-
     TabelModelSpesialis tms = new TabelModelSpesialis();
     TabelModelDokter tmd = new TabelModelDokter();
     TabelModelJaminan tmj = new TabelModelJaminan();
     TabelModelStaf tmsf = new TabelModelStaf();
+    TabelModelPasien tmp = new TabelModelPasien();
 
     /** Creates new form FrmIntPendaftaran */
     public FrmIntPendaftaran() {
@@ -77,25 +80,29 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
         tglPendaftaran.setDate(dt);
 
         /* Mengisi pilihan dokter berdasarkan pilihan spesialis */
-        isiPilihanDokter();
+        //isiPilihanDokter();
 
         /* Menampilkan konfirmasi apabila form pendaftaran ini di-close */
         this.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                int pilih = JOptionPane.showConfirmDialog(rootPane,
-                        "Yakin ingin membatalkan pendaftaran ke Poliklinik?",
-                        "Konfirmasi",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (pilih == JOptionPane.OK_OPTION) {
+                if (txtNamaPasien.getText() == null ? "" == null : txtNamaPasien.getText().equals("")) {
                     dispose();
-                    /* Menghilangan nilai dari form penambahan pasien (internal) */
-                    FrmIntPasien.ID = "";
-                    FrmIntPasien.nama = "";
-                    FrmIntPasien.alamat = "";
-                    FrmIntPasien.jk = "";
-                    FrmIntPasien.tglLahir = "";
+                } else {
+                    int pilih = JOptionPane.showConfirmDialog(rootPane,
+                            "Yakin ingin membatalkan pendaftaran ke Poliklinik?",
+                            "Konfirmasi",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (pilih == JOptionPane.OK_OPTION) {
+                        dispose();
+                        /* Menghilangan nilai dari form penambahan pasien (internal) */
+                        FrmIntPasien.ID = "";
+                        FrmIntPasien.nama = "";
+                        FrmIntPasien.alamat = "";
+                        FrmIntPasien.jk = "";
+                        FrmIntPasien.tglLahir = "";
+                    }
                 }
             }
         });
@@ -131,7 +138,7 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
         pilihNamaDokter.setModel(new javax.swing.DefaultComboBoxModel(ds.serviceTampilNamaDokter(kodeSpesialis, b)));
     }
 
-    public void refresh(){
+    public void refresh() {
         txtNoRm.setText("");
         txtNamaPasien.setText("");
         txtJenkel.setText("");
@@ -183,6 +190,7 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pasien"));
 
+        txtNoRm.setName("txtNoRm"); // NOI18N
         txtNoRm.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNoRmKeyReleased(evt);
@@ -276,15 +284,23 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Registrasi Pasien"));
 
+        pilihPoliTujuan.setName("pilihPoli"); // NOI18N
+
         jLabel2.setText("Poliklinik Tujuan");
+
+        pilihNamaDokter.setName("pilihDokter"); // NOI18N
 
         jLabel4.setText("Nama Dokter");
 
         jLabel5.setText("Jenis Jaminan");
 
+        pilihJaminan.setName("pilihJaminan"); // NOI18N
+
         jLabel10.setText("Tanggal Pendaftaran");
 
         tglPendaftaran.setDateFormatString("yyyy-MM-dd");
+
+        pilihStaf.setName("pilihStaf"); // NOI18N
 
         jLabel11.setText("Staf");
 
@@ -348,6 +364,7 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
         );
 
         btnDaftarkan.setText("DAFTARKAN");
+        btnDaftarkan.setName("btnDaftarkan"); // NOI18N
         btnDaftarkan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDaftarkanActionPerformed(evt);
@@ -374,7 +391,7 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDaftarkan, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                .addComponent(btnDaftarkan, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
 
@@ -394,6 +411,9 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
 
         /* Panggil nilai maximal pendaftaran */
         String nomor = rms.serviceGenerateNomorDaftar(tglNoDaftar);
+        if (!RekamMedisDao.hasilGenerateNomor.equals("ok")) {
+            JOptionPane.showMessageDialog(null, RekamMedisDao.hasilGenerateNomor, "Generate Max Nomor Pendaftaran Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
 
         /* Nomor Rekam Medis */
         String teksRm = txtNoRm.getText();
@@ -421,24 +441,40 @@ public class FrmIntPendaftaran extends javax.swing.JInternalFrame {
         rm.setTglDaftar(tglDaftar);
         rms.serviceInsertRekamMedis(rm);
 
-        refresh();
+        if (RekamMedisDao.hasilInsertRekamMedis.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data rekam medis berhasil ditambah!", "Insert Rekam Medis", JOptionPane.INFORMATION_MESSAGE);
+            refresh();
+        } else {
+            JOptionPane.showMessageDialog(null, RekamMedisDao.hasilInsertRekamMedis, "Insert Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnDaftarkanActionPerformed
 
     private void txtNoRmKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoRmKeyReleased
         // TODO add your handling code here:
         String noRm = txtNoRm.getText();
         String jenkel = null;
-        txtNamaPasien.setText(ps.serviceGetNamaByNoRm(noRm));
-        txtTglLahir.setText(ps.serviceGetTglLahirByNoRm(noRm));
-        txtAlamat.setText(ps.serviceGetAlamatByNoRm(noRm));
-        txtJenkel.setText(ps.serviceGetJenkelByNoRm(noRm));
-        if (txtJenkel.getText().equals("L")) {
-            txtJenkel.setText("Laki-laki");
-        } else if (txtJenkel.getText().equals("P")) {
-            txtJenkel.setText("Perempuan");
+        tmp.setData(ps.serviceGetPasienByNo(noRm));
+        if (!PasienDao.hasilGetPasienByNo.equals("ok")) {
+            JOptionPane.showMessageDialog(null, PasienDao.hasilGetPasienByNo,"Get Pasien By Nomor Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (tmp.getRowCount() == 0) {
+                txtNamaPasien.setText("");
+                txtTglLahir.setText("");
+                txtJenkel.setText("");
+                txtAlamat.setText("");
+            } else {
+                txtNamaPasien.setText(tmp.getValueAt(0, 1).toString());
+                txtJenkel.setText(tmp.getValueAt(0, 2).toString());
+                if (txtJenkel.getText().equals("L")) {
+                    txtJenkel.setText("Laki-laki");
+                } else if (txtJenkel.getText().equals("P")) {
+                    txtJenkel.setText("Perempuan");
+                }
+                txtTglLahir.setText(tmp.getValueAt(0, 3).toString());
+                txtAlamat.setText(tmp.getValueAt(0, 5).toString());
+            }
         }
     }//GEN-LAST:event_txtNoRmKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDaftarkan;
     private javax.swing.JLabel jLabel1;

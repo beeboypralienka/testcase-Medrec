@@ -37,6 +37,14 @@ public class JaminanDao implements JaminanInterface{
     private final String getAllByIdJaminan = "SELECT * FROM jaminan WHERE id_jaminan LIKE ?";
     private final String getAllByNmJaminan = "SELECT * FROM jaminan WHERE nm_jaminan LIKE ?";
 
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetAllIdJaminan;
+    public static String hasilGetAllJaminanById;
+    public static String hasilGetAllJaminanByNm;
+
     public JaminanDao(Connection connection) {
         this.connection = connection;
     }
@@ -48,10 +56,10 @@ public class JaminanDao implements JaminanInterface{
             ps.setString(2, j.getNmJaminan());
             ps.setString(3, j.getKetJaminan());
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data jaminan berhasil ditambah!", "Insert Jaminan", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Jaminan Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilInsert = "ok";
+        }catch(SQLException se){            
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -62,10 +70,10 @@ public class JaminanDao implements JaminanInterface{
             ps.setString(2, j.getKetJaminan());
             ps.setString(3, idJaminan);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data jaminan berhasil diubah","Update Jaminan", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Update Jaminan Gagal",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilUpdate = "ok";
+        }catch(SQLException se){            
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -74,10 +82,10 @@ public class JaminanDao implements JaminanInterface{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(deleteJaminan);
             ps.setString(1, idJaminan);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data jaminan berhasil dihapus","Delete jaminan",JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Hapus jaminan gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilDelete = "ok";
+        }catch(SQLException se){            
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -95,29 +103,34 @@ public class JaminanDao implements JaminanInterface{
             }
             rs.close();
             s.close();
+            hasilGetAll = "ok";
             return list;
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Jaminan Gagal", JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException se){            
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
 
     public String[] getAllIdJaminan(int row) throws SQLException {
         try{
-            String[] data = new String[row];
+            //String[] data = new String[row];
+            String[] data = new String[row+1];
             Statement st = (Statement) connection.createStatement();
             ResultSet rs = st.executeQuery(getAllJaminan);
             Jaminan jm = new Jaminan();
             while(rs.next()){
                 jm.setNmJaminan(rs.getString("id_jaminan"));
                 String nmSpesialis = jm.getNmJaminan();
-                data[rs.getRow()-1] = nmSpesialis;
+                //data[rs.getRow()-1] = nmSpesialis;
+                data[rs.getRow()] = nmSpesialis;
             }
             st.close();
             rs.close();
+            hasilGetAllIdJaminan = "ok";
             return data;
         }catch(Throwable t){
-            JOptionPane.showMessageDialog(null, t.getMessage(), "Error - Get Nama Spesialis", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(), "Error - Get Nama Spesialis", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllIdJaminan = t.getMessage();
             return null;
         }
     }
@@ -138,10 +151,11 @@ public class JaminanDao implements JaminanInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllJaminanById = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Jaminan By ID Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Jaminan By ID Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllJaminanById = t.getMessage();
             return null;
         }
     }
@@ -162,10 +176,11 @@ public class JaminanDao implements JaminanInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllJaminanByNm = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Jaminan By Nama Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Jaminan By Nama Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllJaminanByNm = t.getMessage();
             return null;
         }
     }

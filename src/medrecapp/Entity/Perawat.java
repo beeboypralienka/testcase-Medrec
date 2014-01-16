@@ -5,8 +5,6 @@
 
 package medrecapp.Entity;
 
-import java.util.Date;
-
 /**
  *
  * @author Fachrul Pralienka BM

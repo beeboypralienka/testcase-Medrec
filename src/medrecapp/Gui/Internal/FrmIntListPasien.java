@@ -11,11 +11,13 @@
 package medrecapp.Gui.Internal;
 
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.PasienDao;
 import medrecapp.Gui.Dialog.FrmDlgPasien;
 import medrecapp.Gui.Dialog.FrmDlgRekMedByNoRm;
 import medrecapp.Services.PasienService;
@@ -37,6 +39,9 @@ public class FrmIntListPasien extends javax.swing.JInternalFrame {
         initComponents();
         tabelPasien.setModel(tabelModelPasien);
         tabelModelPasien.setData(ps.serviceGetAllPasien());
+        if(!PasienDao.hasilGetAll.equals("ok")){
+            JOptionPane.showMessageDialog(null, PasienDao.hasilGetAll,"Get All Pasien Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         btnTambah.setEnabled(true);
@@ -89,6 +94,7 @@ public class FrmIntListPasien extends javax.swing.JInternalFrame {
         btnRekamMedis.setEnabled(false);
         txtCari.setText("");
         txtCari.requestFocus();
+        sesuaikan();
     }
 
     /** This method is called from within the constructor to
@@ -254,8 +260,23 @@ public class FrmIntListPasien extends javax.swing.JInternalFrame {
         if (row == -1) {
             return;
         }
-        ps.serviceDeletePasien(tabelPasien.getValueAt(row, 0).toString());
-        refresh();
+
+        int pilih = JOptionPane.showConfirmDialog(rootPane,
+                "Yakin ingin mengahapus data yang dipilih?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (pilih == JOptionPane.OK_OPTION) {
+
+            ps.serviceDeletePasien(tabelPasien.getValueAt(row, 0).toString());
+
+            if (PasienDao.hasilDelete.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data pasien berhasil dihapus!","Delete Pasien",JOptionPane.INFORMATION_MESSAGE);
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(null, PasienDao.hasilDelete,"Delete Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -272,6 +293,7 @@ public class FrmIntListPasien extends javax.swing.JInternalFrame {
         btnTambah.setEnabled(true);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
+        btnRekamMedis.setEnabled(false);
     }//GEN-LAST:event_txtCariKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

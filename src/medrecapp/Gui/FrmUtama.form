@@ -27,16 +27,19 @@
         <Menu class="javax.swing.JMenu" name="menuMaster">
           <Properties>
             <Property name="text" type="java.lang.String" value="Data Master"/>
+            <Property name="name" type="java.lang.String" value="menuDataMaster" noResource="true"/>
           </Properties>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="jMenu1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="SDM"/>
+                <Property name="text" type="java.lang.String" value="Data SDM"/>
+                <Property name="name" type="java.lang.String" value="menuDataSDM" noResource="true"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuDokter">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Data Dokter"/>
+                    <Property name="name" type="java.lang.String" value="menuDataDokter" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuDokterActionPerformed"/>
@@ -45,6 +48,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="menuPerawat">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Data Perawat"/>
+                    <Property name="name" type="java.lang.String" value="menuDataPerawat" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPerawatActionPerformed"/>
@@ -53,6 +57,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="menuStaf">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Data Staf"/>
+                    <Property name="name" type="java.lang.String" value="menuDataStaf" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuStafActionPerformed"/>
@@ -65,6 +70,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="menuSpesialis">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Data Spesialis"/>
+                <Property name="name" type="java.lang.String" value="menuDataSpesialis" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSpesialisActionPerformed"/>
@@ -73,6 +79,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="menuJaminan">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Data Jaminan"/>
+                <Property name="name" type="java.lang.String" value="menuDataJaminan" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuJaminanActionPerformed"/>
@@ -81,9 +88,15 @@
             <MenuItem class="javax.swing.JMenuItem" name="menuObat">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Data Obat"/>
+                <Property name="name" type="java.lang.String" value="menuDataObat" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuObatActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuTindakan">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTindakanActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
@@ -91,19 +104,10 @@
             <MenuItem class="javax.swing.JMenuItem" name="menuPasien">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Data Pasien"/>
+                <Property name="name" type="java.lang.String" value="menuDataPasien" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPasienActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuTindakan">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Data Tindakan"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTindakanActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -121,6 +125,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="menuPendaftaranPasBaru">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Pasien Baru"/>
+                    <Property name="name" type="java.lang.String" value="menuPasienBaru" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPendaftaranPasBaruActionPerformed"/>

@@ -112,4 +112,13 @@ public class TindakanService {
             return null;
         }
     }
+
+    public List serviceGetAllDataTindakanByNo(String noTindakan){
+        try{
+            return ti.getAllDataTindakanByNo(noTindakan);
+        }catch(SQLException se){
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
 }

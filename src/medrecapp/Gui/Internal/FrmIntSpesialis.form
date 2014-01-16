@@ -61,7 +61,7 @@
                   <Component id="btRefresh" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="198" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="210" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -171,19 +171,27 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNmSpesialis">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txtNamaSpesialis" noResource="true"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTarifSpesialis">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="name" type="java.lang.String" value="txtTarifKonsul" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtIdSpesialis">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txtIDSpesialis" noResource="true"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="btnInsert">
       <Properties>
         <Property name="text" type="java.lang.String" value="Insert"/>
+        <Property name="name" type="java.lang.String" value="btnInsert" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInsertActionPerformed"/>
@@ -192,6 +200,7 @@
     <Component class="javax.swing.JButton" name="btnUpdate">
       <Properties>
         <Property name="text" type="java.lang.String" value="Update"/>
+        <Property name="name" type="java.lang.String" value="btnUpdate" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
@@ -230,6 +239,7 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="name" type="java.lang.String" value="tabelSpesialis" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

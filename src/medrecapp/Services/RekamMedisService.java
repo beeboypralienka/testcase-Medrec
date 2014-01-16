@@ -77,14 +77,23 @@ public class RekamMedisService {
 //        }
 //    }
     
-//    public List serviceGetAllRekamMedis(){
-//        try{
-//            return ri.getAllRekamMedis();
-//        }catch(SQLException se){
-//            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
-//            return null;
-//        }
-//    }
+    public List serviceGetAllAtributRekmedByNoDaftar(String noDaftar){
+        try{
+            return ri.getAllAtributRekmedByNoDaftar(noDaftar);
+        }catch(SQLException se){
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
+
+    public List serviceGetAllAtributRekmed(){
+        try{
+            return ri.getAllAtributRekmed();
+        }catch(SQLException se){
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
 
     public List serviceGetRekamMedisByNoRm(String noRm){
         try{
@@ -128,6 +137,54 @@ public class RekamMedisService {
         }catch(SQLException se){
             Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
             return null;
+        }
+    }
+
+    public void serviceUpdatePemeriksaanAwal(RekamMedis rm, String noDaftar){
+        try{
+            connection.setAutoCommit(false);
+            ri.updatePemeriksaanAwal(rm, noDaftar);
+            connection.setAutoCommit(true);
+        }catch(SQLException se){
+            try{
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }catch(SQLException see){
+                Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, see);
+            }
+            Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, se);
+        }
+    }
+
+    public void serviceUpdatePemeriksaanLanjutan(RekamMedis rm, String noDaftar){
+        try{
+            connection.setAutoCommit(false);
+            ri.updatePemeriksaanLanjutan(rm, noDaftar);
+            connection.setAutoCommit(true);
+        }catch(SQLException se){
+            try{
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }catch(SQLException see){
+                Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, see);
+            }
+            Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, se);
+        }
+    }
+
+    public void serviceDeleteRekmed(){
+        try{
+            connection.setAutoCommit(false);
+            ri.deleteRekamMedis();
+            connection.setAutoCommit(true);
+        }catch(SQLException se){
+            try{
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }catch(SQLException see){
+                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+            }
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 }

@@ -8,17 +8,19 @@
  *
  * Created on Dec 19, 2013, 7:59:59 PM
  */
-
 package medrecapp.Gui.Internal;
 
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.DokterDao;
+import medrecapp.Dao.SpesialisDao;
 import medrecapp.Entity.Dokter;
 import medrecapp.Services.DokterService;
 import medrecapp.Services.SpesialisService;
@@ -32,7 +34,7 @@ import medrecapp.TabelModel.TabelModelSpesialis;
 public class FrmIntDokter extends javax.swing.JInternalFrame {
 
     DokterService ds = new DokterService();
-    TabelModelDokter tabelModelDokter = new TabelModelDokter();    
+    TabelModelDokter tabelModelDokter = new TabelModelDokter();
     SpesialisService ss = new SpesialisService();
     TabelModelSpesialis tabelModelSpesialis = new TabelModelSpesialis();
 
@@ -41,13 +43,17 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         initComponents();
         tabelDokter.setModel(tabelModelDokter);
         tabelModelDokter.setData(ds.serviceGetAllDokter());
+        if (!DokterDao.hasilGetAll.equals("ok")) {
+            JOptionPane.showMessageDialog(null, DokterDao.hasilGetAll, "Get All Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         tabelModelSpesialis.setData(ss.serviceGetAllSpesialis());
         int a = tabelModelSpesialis.getRowCount();
-        pilihSpesialis.setModel( new javax.swing.DefaultComboBoxModel( ss.serviceGetAllNamaSpesialis(a) ) );
+        pilihSpesialis.setModel(new javax.swing.DefaultComboBoxModel(ss.serviceGetAllNamaSpesialis(a)));
 
         tabelDokter.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
             public void valueChanged(ListSelectionEvent e) {
                 int row = tabelDokter.getSelectedRow();
                 if (row != -1) {
@@ -56,7 +62,6 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
                     String spesialis = tabelDokter.getValueAt(row, 2).toString();
                     String tglKerja = tabelDokter.getValueAt(row, 3).toString();
                     String alamat = tabelDokter.getValueAt(row, 4).toString();
-                    //txtNoDokter.setText(ID);
                     txtNmDokter.setText(nama);
                     pilihSpesialis.setSelectedItem(ss.serviceGetNmSpesialis(spesialis));
                     txtTglKerja.setText(tglKerja);
@@ -70,38 +75,50 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         });
 
         txtAlamat.addKeyListener(new KeyAdapter() {
+
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode()==KeyEvent.VK_TAB){                    
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_TAB) {
                     txtAlamat.transferFocus();
                     e.consume();
                 }
             }
         });
 
-        clear();
-
-    }
-
-    public void clear() {        
         btnInsert.setEnabled(true);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
 
         txtNmDokter.requestFocus();
         txtNmDokter.setText("");
-        pilihSpesialis.setSelectedItem("Spesialis Bedah");
+        pilihSpesialis.setSelectedIndex(0);
         txtTglKerja.setText("");
         txtAlamat.setText("");
-        tabelModelDokter.setData(ds.serviceGetAllDokter());        
         txtCariDokter.setText("");
+
     }
 
-    public final void sesuaikan(){
+    public void clear() {
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+
+        txtNmDokter.requestFocus();
+        txtNmDokter.setText("");
+        pilihSpesialis.setSelectedIndex(0);
+        txtTglKerja.setText("");
+        txtAlamat.setText("");
+        tabelModelDokter.setData(ds.serviceGetAllDokter());
+        txtCariDokter.setText("");
+
+        sesuaikan();
+    }
+
+    public final void sesuaikan() {
         TableColumnModel tcm = tabelDokter.getColumnModel();
-        for(int kolom=0; kolom<tcm.getColumnCount(); kolom++){
-            int lebarKolomMax=0;
-            for(int baris=0; baris<tabelDokter.getRowCount(); baris++){
+        for (int kolom = 0; kolom < tcm.getColumnCount(); kolom++) {
+            int lebarKolomMax = 0;
+            for (int baris = 0; baris < tabelDokter.getRowCount(); baris++) {
                 TableCellRenderer tcr = tabelDokter.getCellRenderer(baris, kolom);
                 Object nilaiTable = tabelDokter.getValueAt(baris, kolom);
                 Component comp = tcr.getTableCellRendererComponent(tabelDokter, nilaiTable,
@@ -152,11 +169,15 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dokter"));
 
+        txtNmDokter.setName("txtNamaDokter"); // NOI18N
+
         jLabel3.setText("Spesialis");
 
         jLabel2.setText("Nama Dokter");
 
-        pilihSpesialis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Spesialis --" }));
+        txtTglKerja.setName("txtTglKerja"); // NOI18N
+
+        pilihSpesialis.setName("pilihSpesialis"); // NOI18N
 
         jLabel8.setText(":");
 
@@ -174,6 +195,7 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         txtAlamat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         txtAlamat.setLineWrap(true);
         txtAlamat.setRows(5);
+        txtAlamat.setName("txtAlamat"); // NOI18N
         jScrollPane1.setViewportView(txtAlamat);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -235,6 +257,7 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         );
 
         btnInsert.setText("Insert");
+        btnInsert.setName("btnInsert"); // NOI18N
         btnInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertActionPerformed(evt);
@@ -321,7 +344,7 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -336,16 +359,27 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
-        String id = ss.serviceGetIDSpesialis(pilihSpesialis.getSelectedItem().toString());
-        Dokter d = new Dokter();
-        //d.setNoDokter(txtNoDokter.getText());
-        d.setNoDokter("DOK."+ds.serviceGetMaxNoDokter());
-        d.setNmDokter(txtNmDokter.getText().toUpperCase());
-        d.setIdSpesialis(id);
-        d.setTglKerjaDok(txtTglKerja.getText());
-        d.setAlamatDok(txtAlamat.getText());
-        ds.serviceInsertDokter(d);
-        clear();
+        if (pilihSpesialis.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(rootPane, "null", "Error - Get ID Spesialis", JOptionPane.ERROR_MESSAGE);
+        } else {
+            String id = ss.serviceGetIDSpesialis(pilihSpesialis.getSelectedItem().toString());
+            if (!SpesialisDao.hasilGetIDSpesialis.equals("ok")) {
+                JOptionPane.showMessageDialog(null, SpesialisDao.hasilGetIDSpesialis, "Error - Get ID Spesialis", JOptionPane.ERROR_MESSAGE);
+            }
+            Dokter d = new Dokter();
+            d.setNoDokter("DOK." + ds.serviceGetMaxNoDokter());
+            d.setNmDokter(txtNmDokter.getText().toUpperCase());
+            d.setIdSpesialis(id);
+            d.setTglKerjaDok(txtTglKerja.getText());
+            d.setAlamatDok(txtAlamat.getText());
+            ds.serviceInsertDokter(d);
+            if (DokterDao.hasilInsert.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data dokter berhasil ditambah!", "Insert Dokter", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, DokterDao.hasilInsert, "Insert Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -358,11 +392,15 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         d.setAlamatDok(txtAlamat.getText());
 
         int row = tabelDokter.getSelectedRow();
-        if(row != -1){
+        if (row != -1) {
             ds.serviceUpdateDokter(d, tabelDokter.getValueAt(row, 0).toString());
+            if (DokterDao.hasilUpdate.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data dokter berhasil diubah!", "Update Dokter", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, DokterDao.hasilUpdate, "Update Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        //ds.serviceUpdateDokter(d, txtNoDokter.getText());
-        clear();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -371,9 +409,21 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         if (row == -1) {
             return;
         }
-        ds.serviceDeleteDokter(tabelDokter.getValueAt(row, 0).toString());
-        //ds.serviceDeleteDokter(tabelModelDokter.getDokter(row).getIdDokter());
-        clear();
+
+        int pilih = JOptionPane.showConfirmDialog(rootPane,
+                "Yakin ingin mengahapus data yang dipilih?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (pilih == JOptionPane.OK_OPTION) {
+            ds.serviceDeleteDokter(tabelDokter.getValueAt(row, 0).toString());
+            if (DokterDao.hasilDelete.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data dokter berhasil dihapus!", "Delete Dokter", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, DokterDao.hasilDelete, "Delete Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -388,7 +438,7 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
             tabelModelDokter.setData(ds.serviceGetAllDokterByNm(txtCariDokter.getText()));
         }
         txtNmDokter.setText("");
-        pilihSpesialis.setSelectedItem("Spesialis Bedah");
+        pilihSpesialis.setSelectedIndex(0);
         txtTglKerja.setText("");
         txtAlamat.setText("");
 
@@ -396,8 +446,6 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }//GEN-LAST:event_txtCariDokterKeyReleased
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInsert;
@@ -423,5 +471,4 @@ public class FrmIntDokter extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNmDokter;
     private javax.swing.JTextField txtTglKerja;
     // End of variables declaration//GEN-END:variables
-
 }

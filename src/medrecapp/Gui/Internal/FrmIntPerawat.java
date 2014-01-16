@@ -8,11 +8,13 @@ package medrecapp.Gui.Internal;
 
 import com.mysql.jdbc.Connection;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.PerawatDao;
 import medrecapp.Entity.Perawat;
 import medrecapp.Services.PerawatService;
 import medrecapp.Services.SpesialisService;
@@ -37,6 +39,11 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
         initComponents();
         tabelPerawat.setModel(tabelModelPerawat);
         tabelModelPerawat.setData(ps.serviceGetAllPerawat());
+
+        // cek hasilGetAllPerawat
+        if(!PerawatDao.hasilGetAllPerawat.equals("ok")){
+            JOptionPane.showMessageDialog(null, PerawatDao.hasilGetAllPerawat,"Get All Perawat Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();        
 
         tabelModelSpesialis.setData(ss.serviceGetAllSpesialis());
@@ -48,12 +55,10 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
             public void valueChanged(ListSelectionEvent e) {
                 int row = tabelPerawat.getSelectedRow();
                 if (row != -1) {
-
-                    //String noPerawat = tabelPerawat.getValueAt(row, 0).toString();
+                    
                     String nmPerawat = tabelPerawat.getValueAt(row, 1).toString();
                     String tglKerja = tabelPerawat.getValueAt(row, 2).toString();
-                    String idUnitRs = tabelPerawat.getValueAt(row, 3).toString();
-                    //txtNoPerawat.setText(noPerawat);
+                    String idUnitRs = tabelPerawat.getValueAt(row, 3).toString();                    
                     txtNamaPerawat.setText(nmPerawat);
                     txtTglKerja.setText(tglKerja);
                     pilihBagian.setSelectedItem(idUnitRs);
@@ -64,7 +69,15 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
                 }
             }
         });
-        clear();
+        
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+        txtNamaPerawat.setText("");
+        txtTglKerja.setText("");
+        txtCari.setText("");
+        pilihBagian.setSelectedIndex(0);
+        txtNamaPerawat.requestFocus();
     }
     
     public final void sesuaikan(){
@@ -87,8 +100,7 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
         btnInsert.setEnabled(true);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
-        txtNamaPerawat.setText("");
-        //txtTglKerja.setValue(new java.util.Date());
+        txtNamaPerawat.setText("");        
         txtTglKerja.setText("");
         txtCari.setText("");
         pilihBagian.setSelectedIndex(0);
@@ -148,6 +160,8 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
         txtNamaPerawat.setName("txtNamaPerawat"); // NOI18N
 
         pilihBagian.setName("pilihBagian"); // NOI18N
+
+        txtTglKerja.setName("txtTanggalKerja"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -284,7 +298,7 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
                     .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -301,14 +315,17 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
         Perawat p = new Perawat();
         p.setNoPerawat("PER." + ps.serviceGetMaxNoPerawat());
         p.setNmPerawat(txtNamaPerawat.getText());
-
-        //SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        //String tgl = sd.format((Date) txtTglKerja.getValue());
-        p.setTglKerjaPer(txtTglKerja.getText());
-        
+        p.setTglKerjaPer(txtTglKerja.getText());        
         p.setPerSpesialis(id);
         ps.serviceInsertPerawat(p);
-        clear();
+
+        if(PerawatDao.hasilInsertPerawat.equals("ok")){
+            JOptionPane.showMessageDialog(null, "Data perawat berhasil ditambah!", "Insert Perawat", JOptionPane.INFORMATION_MESSAGE);
+            clear();
+        }else{
+            JOptionPane.showMessageDialog(null, PerawatDao.hasilInsertPerawat,"Insert Perawat Gagal!",JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -316,17 +333,19 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
         String id = ss.serviceGetIDSpesialis(pilihBagian.getSelectedItem().toString());
         Perawat p = new Perawat();
         p.setNmPerawat(txtNamaPerawat.getText());
-
-//        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-//        String tgl = sd.format((Date) txtTglKerja.getValue());
-
         p.setTglKerjaPer(txtTglKerja.getText());
         p.setPerSpesialis(id);
+
         int row = tabelPerawat.getSelectedRow();
         if(row != -1){
             ps.serviceUpdatePerawat(p, tabelPerawat.getValueAt(row, 0).toString());
-        }
-        clear();
+            if(PerawatDao.hasilUpdatePerawat.equals("ok")){
+                JOptionPane.showMessageDialog(null, "Data perawat berhasil diubah!", "Update Perawat", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            }else{
+                JOptionPane.showMessageDialog(null, PerawatDao.hasilUpdatePerawat,"Update Perawat Gagal!",JOptionPane.ERROR_MESSAGE);
+            }
+        }        
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -337,7 +356,13 @@ public class FrmIntPerawat extends javax.swing.JInternalFrame {
             return;
         }
         ps.serviceDeletePerawat(tabelPerawat.getValueAt(row, 0).toString());
-        clear();
+        if(PerawatDao.hasilDeletePerawat.equals("ok")){
+            JOptionPane.showMessageDialog(null, "Data perawat berhasil dihapus!","Delete Perawat",JOptionPane.INFORMATION_MESSAGE);
+            clear();
+        }else{
+            JOptionPane.showMessageDialog(null, PerawatDao.hasilDeletePerawat,"Delete Perawat Gagal!",JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed

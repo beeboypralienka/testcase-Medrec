@@ -13,7 +13,7 @@ package medrecapp.Entity;
 public class Tindakan {
     private String noTindakan;
     private String nmTindakan;
-    private String tndkSpesialis;
+    private String tindakanSpesialis;
     private String ketTindakan;
     
     public String getNoTindakan(){
@@ -32,12 +32,12 @@ public class Tindakan {
         this.nmTindakan = nmTindakan;
     }
     
-    public String getTndkSpesialis(){
-        return tndkSpesialis;
+    public String getTindakanSpesialis(){
+        return tindakanSpesialis;
     }
     
-    public void setTndkSpesialis(String tndkSpesialis){
-        this.tndkSpesialis = tndkSpesialis;        
+    public void setTindakanSpesialis(String tndkSpesialis){
+        this.tindakanSpesialis = tndkSpesialis;
     }
     
     public String getKetTindakan(){

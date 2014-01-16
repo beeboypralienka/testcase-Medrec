@@ -13,6 +13,7 @@ package medrecapp.Gui.Internal;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -20,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.RekamMedisDao;
 import medrecapp.Gui.Dialog.FrmDlgPelayanan;
 import medrecapp.Gui.Dialog.FrmDlgPeriksaAwal;
 import medrecapp.Gui.Dialog.FrmDlgPeriksaLanjutan;
@@ -37,12 +39,12 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
     RekamMedisService rms = new RekamMedisService();
     TabelModelRekmedPasienPoli tabelModelRekmedPasienPoli = new TabelModelRekmedPasienPoli();
 
-    public static String noPendaftaranPoli;
+    public static String noPendaftaranPoli;        
 
     /** Creates new form FrmIntPoliklinik */
     public FrmIntPoliklinik() {
         initComponents();
-        setTitle("POLIKLINIK PENYAKIT " + FrmUtama.poliTujuan.toUpperCase());
+        setTitle("POLIKLINIK PENYAKIT " + FrmUtama.poliTujuan.toUpperCase());        
 
         Date dt = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -78,8 +80,8 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
                     noPendaftaranPoli = tabelPasienPoli.getValueAt(row, 0).toString();
                     btnAwal.setEnabled(true);
                     btnLanjutan.setEnabled(true);
-                    btnPelayanan.setEnabled(true);
-                    btnResep.setEnabled(true);
+//                    btnPelayanan.setEnabled(true);
+//                    btnResep.setEnabled(true);
                 }
             }
         });
@@ -90,11 +92,17 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
                 if (panelAntrian.isShowing()) {
                     tabelAntrian.setModel(tabelModelRekmedPasienPoli);
                     tabelModelRekmedPasienPoli.setData(rms.serviceGetRekamMedisPasienAntri(FrmUtama.poliTujuan, tglPendaftaran.getText()));
+                    if(!RekamMedisDao.hasilGetRekamMedisPasienAntri.equals("ok")){
+                        JOptionPane.showMessageDialog(null, RekamMedisDao.hasilGetRekamMedisPasienAntri,"Get Rekam Medis Pasien Antri Gagal!", JOptionPane.ERROR_MESSAGE);
+                    }
                     sesuaikanAntrian();
                     refreshAntrian();
                 } else {
                     tabelPasienPoli.setModel(tabelModelRekmedPasienPoli);
                     tabelModelRekmedPasienPoli.setData(rms.serviceGetRekamMedisPasienPoli(FrmUtama.poliTujuan, tglPendaftaran.getText()));
+                    if(!RekamMedisDao.hasilGetRekamMedisPasienPoli.equals("ok")){
+                        JOptionPane.showMessageDialog(null, RekamMedisDao.hasilGetRekamMedisPasienPoli,"Get Rekam Medis Pasien Poli Gagal!", JOptionPane.ERROR_MESSAGE);
+                    }
                     sesuaikanPoli();
                     refreshPasienPoli();
                 }
@@ -139,14 +147,16 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         tabelModelRekmedPasienPoli.setData(rms.serviceGetRekamMedisPasienAntri(FrmUtama.poliTujuan, tglPendaftaran.getText()));
         btnMasuk.setEnabled(false);
         txtCariAntrian.setText("");
+        sesuaikanAntrian();
     }
 
     public void refreshPasienPoli(){
         tabelModelRekmedPasienPoli.setData(rms.serviceGetRekamMedisPasienPoli(FrmUtama.poliTujuan, tglPendaftaran.getText()));
         btnAwal.setEnabled(false);
         btnLanjutan.setEnabled(false);
-        btnPelayanan.setEnabled(false);
-        btnResep.setEnabled(false);
+        sesuaikanPoli();
+//        btnPelayanan.setEnabled(false);
+//        btnResep.setEnabled(false);
     }
 
     /** This method is called from within the constructor to
@@ -406,12 +416,14 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         FrmDlgPeriksaLanjutan fpl = new FrmDlgPeriksaLanjutan(null, true);
         fpl.setVisible(true);
+        refreshPasienPoli();
     }//GEN-LAST:event_btnLanjutanActionPerformed
 
     private void btnAwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAwalActionPerformed
         // TODO add your handling code here:
         FrmDlgPeriksaAwal fpa = new FrmDlgPeriksaAwal(null, true);
         fpa.setVisible(true);
+        refreshPasienPoli();
     }//GEN-LAST:event_btnAwalActionPerformed
 
     private void btnRefreshAntrianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshAntrianActionPerformed
@@ -437,7 +449,13 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
             return;
         }
         rms.serviceUpdatePasienMasukPoli(tabelAntrian.getValueAt(row, 0).toString());
-        refreshAntrian();
+        if(RekamMedisDao.hasilUpdatePasienMasukPoli.equals("ok")){
+            JOptionPane.showMessageDialog(null, "Data pasien berhasil masuk poli!", "Update Rekam Medis", JOptionPane.INFORMATION_MESSAGE);
+            refreshAntrian();
+        }else{
+            JOptionPane.showMessageDialog(null, RekamMedisDao.hasilUpdatePasienMasukPoli,"Update Rekam Medis Gagal!",JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnMasukActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

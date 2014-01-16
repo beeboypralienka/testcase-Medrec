@@ -4,12 +4,15 @@
  */
 package medrecapp.Services;
 
+import org.junit.runners.MethodSorters;
+import org.junit.FixMethodOrder;
 import com.mysql.jdbc.Connection;
 import java.sql.ResultSet;
 import com.mysql.jdbc.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import medrecapp.Entity.Perawat;
+import medrecapp.Entity.Spesialis;
 import medrecapp.TabelModel.TabelModelPerawat;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,59 +25,88 @@ import static org.junit.Assert.*;
  *
  * @author Fachrul Pralienka BM
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PerawatServiceTest {
 
     private List<Perawat> list;
     private Connection connection;
-    private final String getAllPerawat =
-            "SELECT p.no_perawat, p.nm_perawat, p.tgl_kerja_per, s.nm_spesialis "
-            + "FROM perawat p, spesialis s "
-            + "WHERE p.per_spesialis = s.id_spesialis ORDER BY p.no_perawat ASC";
+    private PerawatService instance;
+    private TabelModelPerawat tabelModelPerawat;
+    private String ExpNoPerawat;
+    private String ExpNmPerawat;
+    private String ExpTglKerja;
+    private String ExpPerSpesialis;
+    private static String ExpIdSpesialis;
+    private Perawat p;
+    private final String getAllPerawat = "SELECT * FROM perawat";    
 
     public PerawatServiceTest() {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() throws Exception {        
 
+        Spesialis sp = new Spesialis();
+        SpesialisService sps = new SpesialisService();
+
+        ExpIdSpesialis = "Sp.Mt";
+        sp.setIdSpesialis(ExpIdSpesialis);
+        sp.setNmSpesialis("Mata");
+        sp.setTarifKonsul(50000);
+        sps.serviceInsertSpesialis(sp);
+        //System.out.println(SpesialisDao.hasilInsert);
+
+        ExpIdSpesialis = "Sp.PD";
+        sp.setIdSpesialis(ExpIdSpesialis);
+        sp.setNmSpesialis("Dalam");
+        sp.setTarifKonsul(70000);
+        sps.serviceInsertSpesialis(sp);
+        //System.out.println(SpesialisDao.hasilInsert);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        SpesialisService sps = new SpesialisService();
+
+        ExpIdSpesialis = "Sp.Mt";
+        sps.serviceDeleteSpesialis(ExpIdSpesialis);
+        //System.out.println(SpesialisDao.hasilDelete);
+
+        ExpIdSpesialis = "Sp.PD";
+        sps.serviceDeleteSpesialis(ExpIdSpesialis);
+        //System.out.println(SpesialisDao.hasilDelete);
     }
 
     @Before
     public void setUp() {
         list = new ArrayList<Perawat>();
+        p = new Perawat();
+        instance = new PerawatService();
+        tabelModelPerawat = new TabelModelPerawat();
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() {                
     }
     /**
      * Test of serviceInsertPerawat method, of class PerawatService.
      */
     @Test
-    public void testServiceInsertPerawat() {
-        System.out.print("serviceInsertPerawat: ");
+    public void a_insertPerawat() {
+        System.out.println("1. serviceInsertPerawat");
 
-        String ExpNoPerawat    = "PER.003";
-        String ExpNmPerawat    = "Lina Meiga";
-        String ExpTglKerja     = "2013-05-04";
-        String ExpPerSpesialis = "SP.PD";
-
-        Perawat p = new Perawat();
-        p.setNoPerawat(ExpNoPerawat);
-        p.setNmPerawat(ExpNmPerawat);
-        p.setTglKerjaPer(ExpTglKerja);
-        p.setPerSpesialis(ExpPerSpesialis);
-
-        PerawatService instance = new PerawatService();
-        instance.serviceInsertPerawat(p);
-
-        TabelModelPerawat tabelModelPerawat = new TabelModelPerawat();
-        tabelModelPerawat.setData(instance.serviceGetAllPerawatByNo(ExpNoPerawat));
+        ExpNoPerawat    = "PER.003";
+        ExpNmPerawat    = "Lina Meiga";
+        ExpTglKerja     = "2013-05-04";
+        ExpPerSpesialis = "Sp.Mt";
         
+        p.setNoPerawat(ExpNoPerawat);        
+        p.setNmPerawat(ExpNmPerawat);        
+        p.setTglKerjaPer(ExpTglKerja);        
+        p.setPerSpesialis(ExpPerSpesialis);                
+        instance.serviceInsertPerawat(p);        
+        
+        tabelModelPerawat.setData(instance.serviceGetAllDataPerawatByNo(ExpNoPerawat));
         assertEquals(ExpNmPerawat, tabelModelPerawat.getValueAt(0, 1));
         assertEquals(ExpTglKerja, tabelModelPerawat.getValueAt(0, 2));
         assertEquals(ExpPerSpesialis, tabelModelPerawat.getValueAt(0, 3));
@@ -85,23 +117,20 @@ public class PerawatServiceTest {
      * Test of serviceUpdatePerawat method, of class PerawatService.
      */
     @Test
-    public void testServiceUpdatePerawat() {
-        System.out.print("serviceUpdatePerawat: ");
+    public void b_updatePerawat() {
+        System.out.println("2. serviceUpdatePerawat");
 
-        String ExpNoPerawat    = "PER.003";
-        String ExpNmPerawat    = "Linawati";
-        String ExpTglKerja     = "2009-10-03";
-        String ExpPerSpesialis = "SP.PD";
-
-        Perawat p = new Perawat();
+        ExpNoPerawat    = "PER.003";
+        ExpNmPerawat    = "Linawati";
+        ExpTglKerja     = "2009-10-03";
+        ExpPerSpesialis = "Sp.PD";
+        
         p.setNmPerawat(ExpNmPerawat);
         p.setTglKerjaPer(ExpTglKerja);
-        p.setPerSpesialis(ExpPerSpesialis);
-        PerawatService instance = new PerawatService();
-        instance.serviceUpdatePerawat(p, ExpNoPerawat);
-
-        TabelModelPerawat tabelModelPerawat = new TabelModelPerawat();
-        tabelModelPerawat.setData(instance.serviceGetAllPerawatByNo(ExpNoPerawat));
+        p.setPerSpesialis(ExpPerSpesialis);        
+        instance.serviceUpdatePerawat(p, ExpNoPerawat);        
+        
+        tabelModelPerawat.setData(instance.serviceGetAllDataPerawatByNo(ExpNoPerawat));
 
         assertEquals(ExpNmPerawat, tabelModelPerawat.getValueAt(0, 1));
         assertEquals(ExpTglKerja, tabelModelPerawat.getValueAt(0, 2));
@@ -111,17 +140,11 @@ public class PerawatServiceTest {
      * Test of serviceDeletePerawat method, of class PerawatService.
      */
     @Test
-    public void testServiceDeletePerawat() {
-        System.out.print("serviceDeletePerawat: ");
-
-        String ExpNoPerawat = "PER.003";
-
-        PerawatService instance = new PerawatService();
-        instance.serviceDeletePerawat(ExpNoPerawat);
-
-        TabelModelPerawat tabelModelPerawat = new TabelModelPerawat();
-        tabelModelPerawat.setData(instance.serviceGetAllPerawatByNo(ExpNoPerawat));
-
+    public void c_deletePerawat() {
+        System.out.println("3. serviceDeletePerawat");
+        ExpNoPerawat = "PER.003";        
+        instance.serviceDeletePerawat(ExpNoPerawat);        
+        tabelModelPerawat.setData(instance.serviceGetAllDataPerawatByNo(ExpNoPerawat));
         assertEquals(0, tabelModelPerawat.getRowCount());
     }
     /**
@@ -129,13 +152,10 @@ public class PerawatServiceTest {
      */    
 
     @Test
-    public void testServiceGetAllPerawat() {
-        System.out.print("serviceGetAllPerawat: ");
-        PerawatService instance = new PerawatService();
-
-        TabelModelPerawat tabelModelPerawat = new TabelModelPerawat();
+    public void d_getAllPerawat() {
+        System.out.println("serviceGetAllPerawat");        
+        
         tabelModelPerawat.setData(instance.serviceGetAllPerawat());
-
         try{
             Statement s = (Statement) connection.createStatement();
             ResultSet rs = s.executeQuery(getAllPerawat);

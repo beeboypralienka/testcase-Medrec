@@ -62,7 +62,7 @@
                   <Component id="btnRefresh" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" pref="217" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="233" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -159,6 +159,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtNmDokter">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txtNamaDokter" noResource="true"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -171,14 +174,16 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTglKerja">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="txtTglKerja" noResource="true"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="pilihSpesialis">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="-- Spesialis --"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="pilihSpesialis" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
@@ -226,6 +231,7 @@
                 </Property>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="name" type="java.lang.String" value="txtAlamat" noResource="true"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -235,6 +241,7 @@
     <Component class="javax.swing.JButton" name="btnInsert">
       <Properties>
         <Property name="text" type="java.lang.String" value="Insert"/>
+        <Property name="name" type="java.lang.String" value="btnInsert" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInsertActionPerformed"/>

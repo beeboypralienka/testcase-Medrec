@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import medrecapp.Entity.Dokter;
 import medrecapp.Interfaces.DokterInterface;
 
@@ -37,6 +36,17 @@ public class DokterDao implements DokterInterface{
     private final String getAllByIdSpesialis = "SELECT * FROM dokter WHERE id_spesialis = ?";
     private final String getNoDokterByNama = "SELECT no_dokter FROM dokter WHERE nm_dokter = ?";
 
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetAllDokterByNo;
+    public static String hasilGetAllDokterByNm;
+    public static String hasilGetMaxIdDokter;
+    public static String hasilGetAllDokterByIdSpesialis;
+    public static String hasilGetAllNamaDokter;
+    public static String hasilGetNoDokterByNama;
+
     public DokterDao(Connection connection) {
         this.connection = connection;
     }
@@ -50,10 +60,10 @@ public class DokterDao implements DokterInterface{
             ps.setString(4, d.getTglKerjaDok());
             ps.setString(5, d.getAlamatDok());
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data dokter berhasil ditambah!", "Insert Dokter", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Dokter Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilInsert = "ok";
+        }catch(SQLException se){            
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -66,10 +76,10 @@ public class DokterDao implements DokterInterface{
             ps.setString(4, d.getAlamatDok());
             ps.setString(5, noDokter);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data dokter berhasil diubah!", "Update Dokter", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Update Dokter Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilUpdate = "ok";
+        }catch(SQLException se){            
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -78,10 +88,10 @@ public class DokterDao implements DokterInterface{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(deleteDokter);
             ps.setString(1, noDokter);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data dokter berhasil dihapus!","Delete Dokter",JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Delete Dokter Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilDelete = "ok";
+        }catch(SQLException se){            
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -101,9 +111,10 @@ public class DokterDao implements DokterInterface{
             }
             rs.close();
             s.close();
+            hasilGetAll = "ok";
             return list;
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException se){            
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
@@ -126,10 +137,11 @@ public class DokterDao implements DokterInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllDokterByNo = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Dokter By Nomor Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Dokter By Nomor Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllDokterByNo = t.getMessage();
             return null;
         }
     }
@@ -152,10 +164,11 @@ public class DokterDao implements DokterInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllDokterByNm = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Dokter By Nama Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Dokter By Nama Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllDokterByNm = t.getMessage();
             return null;
         }
     }
@@ -168,7 +181,9 @@ public class DokterDao implements DokterInterface{
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 max = rs.getString(1);
-                if (max.length() == 1) {
+                if(max == null){
+                  hasil = "001";
+                } else if (max.length() == 1) {
                     hasil = "00" + max;
                 } else if (max.length() == 2) {
                     hasil = "0" + max;
@@ -176,10 +191,11 @@ public class DokterDao implements DokterInterface{
                     hasil = max;
                 }
             }
+            hasilGetMaxIdDokter = "ok";
             return hasil;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get Max Nomor Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get Max Nomor Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetMaxIdDokter = t.getMessage();
             return null;
         }
     }
@@ -198,27 +214,33 @@ public class DokterDao implements DokterInterface{
             }
             rs.close();
             ps.close();
+            hasilGetAllDokterByIdSpesialis = "ok";
             return list;
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Dokter By Id Spesialis Gagal!",JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Dokter By Id Spesialis Gagal!",JOptionPane.ERROR_MESSAGE);
+            hasilGetAllDokterByIdSpesialis = se.getMessage();
             return null;
         }
     }
 
     public String[] getAllNamaDokter(String dokter, int total) throws SQLException {
         try{
-            String[]nama = new String[total];
+            //String[]nama = new String[total];
+            String[]nama = new String[total+1];
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getAllByIdSpesialis);
             ps.setString(1, dokter);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                nama[rs.getRow()-1] = rs.getString("nm_dokter");
+                //nama[rs.getRow()-1] = rs.getString("nm_dokter");
+                nama[rs.getRow()] = rs.getString("nm_dokter");
             }
             rs.close();
             ps.close();
+            hasilGetAllNamaDokter = "ok";
             return nama;
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"String[] Nama Dokter Gagal!",JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(),"String[] Nama Dokter Gagal!",JOptionPane.ERROR_MESSAGE);
+            hasilGetAllNamaDokter = se.getMessage();
             return null;
         }
     }
@@ -236,9 +258,11 @@ public class DokterDao implements DokterInterface{
             }
             ps.close();
             rs.close();
+            hasilGetNoDokterByNama = "ok";
             return pop;
         }catch(Throwable t){
-            JOptionPane.showMessageDialog(null, t.getMessage(), "Error - Get ID Spesialis", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(), "Error - Get ID Spesialis", JOptionPane.ERROR_MESSAGE);
+            hasilGetNoDokterByNama = t.getMessage();
             return null;
         }
     }

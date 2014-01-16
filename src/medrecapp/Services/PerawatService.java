@@ -112,4 +112,50 @@ public class PerawatService {
             return null;
         }
     }
+
+    public String[] serviceGetAllNamaPerawat(int b){
+        try{
+            return prwi.getAllNmPerawat(b);
+        }catch(SQLException t){
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, t);
+            return null;
+        }
+    }
+
+    public String serviceGetNoPerawat(String nmPerawat){
+        try{
+            return prwi.getNoPerawat(nmPerawat);
+        }catch(SQLException t){
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, t);
+            return null;
+        }
+    }
+
+    public List serviceGetAllDataPerawatByNo(String noPerawat){
+        try{
+            return prwi.getAllDataPerawatByNo(noPerawat);
+        }catch(SQLException se){
+            Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
+
+//    public List serviceGetAllPerawatByPoli(String poli){
+//        try{
+//            return prwi.getAllPerawatByPoli(poli);
+//        }catch(SQLException se){
+//            Logger.getLogger(PerawatService.class.getName()).log(Level.SEVERE, null, se);
+//            return null;
+//        }
+//    }
+//
+//    public String[] serviceGetAllNamaPerawatByPoli(String poli, int b){
+//        try{
+//            return prwi.getAllNmPerawatByPoli(poli, b);
+//        }catch(SQLException t){
+//            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, t);
+//            return null;
+//        }
+//    }
+    
 }

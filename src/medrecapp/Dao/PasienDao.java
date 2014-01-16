@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import medrecapp.Entity.Pasien;
 import medrecapp.Interfaces.PasienInterface;
 
@@ -36,6 +35,16 @@ public class PasienDao implements PasienInterface{
 
     private final String getPasienByNo = "SELECT * FROM pasien WHERE no_rm=?";
 
+    /* Variabel untuk mengirim data hasil */
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetMaxNoRm;
+    public static String hasilGetAllByNo;
+    public static String hasilGetAllByNama;
+    public static String hasilGetPasienByNo;
+
     public PasienDao(Connection connection) {
         this.connection = connection;
     }
@@ -50,10 +59,10 @@ public class PasienDao implements PasienInterface{
             ps.setString(5, p.getAgama());
             ps.setString(6, p.getAlamatPas());
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data pasien berhasil ditambah!", "Insert Pasien", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilInsert = "ok";
+        }catch(SQLException se){            
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -67,10 +76,10 @@ public class PasienDao implements PasienInterface{
             ps.setString(5, p.getAlamatPas());
             ps.setString(6, noRm);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data pasien berhasil diubah!", "Update Pasien", JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Update Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilUpdate = "ok";
+        }catch(SQLException se){            
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -79,10 +88,10 @@ public class PasienDao implements PasienInterface{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(deletePasien);
             ps.setString(1, noRm);
             ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Data pasien berhasil dihapus!","Delete Pasien",JOptionPane.INFORMATION_MESSAGE);
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Delete Pasien Gagal!",JOptionPane.ERROR_MESSAGE);
+            ps.close();            
+            hasilDelete = "ok";
+        }catch(SQLException se){            
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -103,9 +112,10 @@ public class PasienDao implements PasienInterface{
             }
             rs.close();
             s.close();
+            hasilGetAll = "ok";
             return list;
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Pasien Gagal!", JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException se){            
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
@@ -118,7 +128,9 @@ public class PasienDao implements PasienInterface{
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 max = rs.getString(1);
-                if (max.length() == 1) {
+                if(max == null){
+                    hasil = "000001";
+                } else if (max.length() == 1) {
                     hasil = "00000" + max;
                 } else if (max.length() == 2) {
                     hasil = "0000" + max;
@@ -132,10 +144,11 @@ public class PasienDao implements PasienInterface{
                     hasil = max;
                 }
             }
+            hasilGetMaxNoRm = "ok";
             return hasil;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get Max Nomor Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get Max Nomor Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetMaxNoRm = t.getMessage();
             return null;
         }
     }
@@ -159,10 +172,11 @@ public class PasienDao implements PasienInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllByNo = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Pasien By No. RM Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Pasien By No. RM Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllByNo = t.getMessage();
             return null;
         }
     }
@@ -186,97 +200,38 @@ public class PasienDao implements PasienInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllByNama = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Pasien By Nama Pasien Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Pasien By Nama Pasien Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllByNama = t.getMessage();
             return null;
         }
     }
 
-    public String getNamaPasienByNo(String noRm) throws SQLException {
+    public List getPasienByNo(String noRm) throws SQLException {
         try {
-            String nama = null;
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getPasienByNo);
-            ps.setString(1, noRm);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {                
-                nama = rs.getString("nm_pas");
-            }
-            ps.close();
-            rs.close();
-            return nama;
-        } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get Nama Pasien By Nomor Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-    }
-
-    public String getJenkelPasienByNo(String noRm) throws SQLException {
-        try {
-            String jk = null;
+            List list = new ArrayList();
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getPasienByNo);
             ps.setString(1, noRm);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                jk = rs.getString("jk_pas");
+                Pasien p = new Pasien();
+                p.setNoRm(rs.getString("no_rm"));
+                p.setNmPas(rs.getString("nm_pas"));
+                p.setJkPas(rs.getString("jk_pas"));
+                p.setTglLahir(rs.getString("tgl_lahir"));
+                p.setAgama(rs.getString("agama"));
+                p.setAlamatPas(rs.getString("alamat_pas"));
+                list.add(p);
             }
             ps.close();
             rs.close();
-            return jk;
+            hasilGetPasienByNo = "ok";
+            return list;
         } catch (Throwable t) {
-            return null;
-        }
-    }
-
-    public String getTglLahirPasienByNo(String noRm) throws SQLException {
-        try {
-            String tglLahir = null;
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getPasienByNo);
-            ps.setString(1, noRm);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                tglLahir = rs.getString("tgl_lahir");
-            }
-            ps.close();
-            rs.close();
-            return tglLahir;
-        } catch (Throwable t) {
-            return null;
-        }
-    }
-
-    public String getAgamaPasienByNo(String noRm) throws SQLException {
-        try {
-            String agama = null;
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getPasienByNo);
-            ps.setString(1, noRm);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                agama = rs.getString("agama");
-            }
-            ps.close();
-            rs.close();
-            return agama;
-        } catch (Throwable t) {
-            return null;
-        }
-    }
-
-    public String getAlamatPasienByNo(String noRm) throws SQLException {
-        try {
-            String alamat = null;
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(getPasienByNo);
-            ps.setString(1, noRm);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                alamat = rs.getString("alamat_pas");
-            }
-            ps.close();
-            rs.close();
-            return alamat;
-        } catch (Throwable t) {
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get Nama Pasien By Nomor Rekam Medis Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetPasienByNo = t.getMessage();
             return null;
         }
     }

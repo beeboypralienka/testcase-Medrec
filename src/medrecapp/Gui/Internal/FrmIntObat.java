@@ -72,6 +72,7 @@ public class FrmIntObat extends javax.swing.JInternalFrame {
         txtCari.setText("");
         txtIdObat.requestFocus();
         tabelModelObat.setData(os.serviceGetAllObat());
+        sesuaikan();
     }
 
     /**

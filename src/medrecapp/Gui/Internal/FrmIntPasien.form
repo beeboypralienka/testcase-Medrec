@@ -43,7 +43,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnInsert" min="-2" pref="45" max="-2" attributes="1"/>
-              <EmptySpace pref="32" max="32767" attributes="0"/>
+              <EmptySpace pref="44" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -247,6 +247,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Laki-laki"/>
+            <Property name="name" type="java.lang.String" value="radioLaki" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="radioPerempuan">
@@ -255,6 +256,7 @@
               <ComponentRef name="grupRadio"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Perempuan"/>
+            <Property name="name" type="java.lang.String" value="radioPerempuan" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

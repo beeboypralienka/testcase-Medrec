@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package medrecapp.Gui.Internal;
 
 import com.mysql.jdbc.Connection;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.JaminanDao;
 import medrecapp.Entity.Jaminan;
 import medrecapp.Services.JaminanService;
 import medrecapp.TabelModel.TabelModelJaminan;
@@ -24,6 +25,7 @@ import medrecapp.TabelModel.TabelModelJaminan;
  * @author Hady
  */
 public class FrmIntJaminan extends javax.swing.JInternalFrame {
+
     JaminanService js = new JaminanService();
     TabelModelJaminan tabelModelJaminan = new TabelModelJaminan();
     Connection connection;
@@ -35,6 +37,9 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
         initComponents();
         tabelJaminan.setModel(tabelModelJaminan);
         tabelModelJaminan.setData(js.serviceGetAllJaminan());
+        if (!JaminanDao.hasilGetAll.equals("ok")) {
+            JOptionPane.showMessageDialog(null, JaminanDao.hasilGetAll, "Get All Jaminan Gagal", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         tabelJaminan.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -48,31 +53,40 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
                     txtIdJaminan.setText(idJaminan);
                     txtNamaJaminan.setText(nmJaminan);
                     txtKeterangan.setText(keterangan);
-                    
+
                     btnInsert.setEnabled(false);
                     btnUpdate.setEnabled(true);
                     btnDelete.setEnabled(true);
                 }
             }
         });
-        
+
         txtKeterangan.addKeyListener(new KeyAdapter() {
+
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode()==KeyEvent.VK_TAB){                    
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_TAB) {
                     txtKeterangan.transferFocus();
                     e.consume();
                 }
             }
         });
-        clear();
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+
+        txtIdJaminan.setText("");
+        txtNamaJaminan.setText("");
+        txtKeterangan.setText("");
+        txtCari.setText("");
+        txtIdJaminan.requestFocus();
     }
-    
-    public final void sesuaikan(){
+
+    public final void sesuaikan() {
         TableColumnModel tcm = tabelJaminan.getColumnModel();
-        for(int kolom=0; kolom<tcm.getColumnCount(); kolom++){
-            int lebarKolomMax=0;
-            for(int baris=0; baris<tabelJaminan.getRowCount(); baris++){
+        for (int kolom = 0; kolom < tcm.getColumnCount(); kolom++) {
+            int lebarKolomMax = 0;
+            for (int baris = 0; baris < tabelJaminan.getRowCount(); baris++) {
                 TableCellRenderer tcr = tabelJaminan.getCellRenderer(baris, kolom);
                 Object nilaiTable = tabelJaminan.getValueAt(baris, kolom);
                 Component comp = tcr.getTableCellRendererComponent(tabelJaminan, nilaiTable,
@@ -83,18 +97,19 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
             tc.setPreferredWidth(lebarKolomMax);
         }
     }
-    
-    public void clear(){
+
+    public void clear() {
         btnInsert.setEnabled(true);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
-        
+
         txtIdJaminan.setText("");
         txtNamaJaminan.setText("");
         txtKeterangan.setText("");
         txtCari.setText("");
         tabelModelJaminan.setData(js.serviceGetAllJaminan());
         txtIdJaminan.requestFocus();
+        sesuaikan();
     }
 
     /**
@@ -152,6 +167,8 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
         jLabel1.setText("ID Jaminan");
 
         jLabel6.setText(":");
+
+        txtIdJaminan.setName("txtIDJaminan"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -275,9 +292,7 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9)
                             .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(468, Short.MAX_VALUE))))
         );
@@ -293,7 +308,7 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
                     .addComponent(btnInsert, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,7 +326,12 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
         j.setNmJaminan(txtNamaJaminan.getText());
         j.setKetJaminan(txtKeterangan.getText());
         js.serviceInsertJaminan(j);
-        clear();
+        if (JaminanDao.hasilInsert.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data jaminan berhasil ditambah!", "Insert Jaminan", JOptionPane.INFORMATION_MESSAGE);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, JaminanDao.hasilInsert, "Insert Jaminan Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -319,18 +339,34 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
         Jaminan j = new Jaminan();
         j.setNmJaminan(txtNamaJaminan.getText());
         j.setKetJaminan(txtKeterangan.getText());
-        js.serviceUpdateJaminan(j, txtIdJaminan.getText());
-        clear();
+
+        int row = tabelJaminan.getSelectedRow();
+        if (row != -1) {
+            js.serviceUpdateJaminan(j, tabelJaminan.getValueAt(row, 0).toString());
+            if (JaminanDao.hasilUpdate.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data jaminan berhasil diubah", "Update Jaminan", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, JaminanDao.hasilUpdate, "Update Jaminan Gagal", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         int row = tabelJaminan.getSelectedRow();
-        if (row == -1){
+        if (row == -1) {
             return;
         }
         js.serviceDeleteJaminan(tabelJaminan.getValueAt(row, 0).toString());
-        clear();
+        if (JaminanDao.hasilDelete.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data jaminan berhasil dihapus", "Delete jaminan", JOptionPane.INFORMATION_MESSAGE);
+            clear();
+        }else{
+            JOptionPane.showMessageDialog(null, JaminanDao.hasilDelete,"Hapus jaminan gagal!",JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -352,8 +388,6 @@ public class FrmIntJaminan extends javax.swing.JInternalFrame {
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }//GEN-LAST:event_txtCariKeyReleased
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInsert;

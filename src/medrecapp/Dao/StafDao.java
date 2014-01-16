@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import medrecapp.Entity.Staf;
 import medrecapp.Interfaces.StafInterface;
 
@@ -41,6 +40,17 @@ public class StafDao implements StafInterface{
     /* Query untuk memanggil nilai maximal Nomor Staf+1 */
     private final String getMaxNoStaf   = "SELECT MAX(SUBSTR(no_staf,5,7))+1 FROM staf";
 
+    /* Variabel untuk mengirim data hasil */
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetAllNmStaf;
+    public static String hasilGetIDStaf;
+    public static String hasilGetMaxNoStaf;
+    public static String hasilGetAllStafByNm;
+    public static String hasilGetAllStafByNo;
+
     public StafDao(Connection connection) {
         this.connection = connection;
     }
@@ -52,12 +62,12 @@ public class StafDao implements StafInterface{
             ps.setString(2, st.getNmStaf());
             ps.setString(3, st.getAlamatStaf());
             ps.executeUpdate();
-            ps.close();
-            //JOptionPane.showMessageDialog(null, "Data staf berhasil ditambah!", "Insert Staf", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Insert Staf - Data staf berhasil ditambah!");
-        }catch(SQLException se){
-            //JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Staf Gagal!",JOptionPane.ERROR_MESSAGE);
-            System.out.println("Insert Staf Gagal - "+se.getMessage());
+            ps.close();            
+            //System.out.println("Insert Staf - Data staf berhasil ditambah!");
+            hasilInsert = "ok";
+        }catch(SQLException se){            
+            //System.out.println("Insert Staf Gagal - "+se.getMessage());
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -68,12 +78,12 @@ public class StafDao implements StafInterface{
             ps.setString(2, st.getAlamatStaf());
             ps.setString(3, noStaf);
             ps.executeUpdate();
-            ps.close();
-            //JOptionPane.showMessageDialog(null, "Data staf berhasil diubah!", "Update Staf", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Update Staf - Data staf berhasil diubah!");
-        }catch(SQLException se){
-            //JOptionPane.showMessageDialog(null, se.getMessage(),"Update Staf Gagal!",JOptionPane.ERROR_MESSAGE);
-            System.out.println("Update Staf Gagal - "+se.getMessage());
+            ps.close();            
+            //System.out.println("Update Staf - Data staf berhasil diubah!");
+            hasilUpdate = "ok";
+        }catch(SQLException se){            
+            //System.out.println("Update Staf Gagal - "+se.getMessage());
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -82,12 +92,12 @@ public class StafDao implements StafInterface{
             PreparedStatement ps = (PreparedStatement) connection.prepareStatement(deleteStaf);
             ps.setString(1, noStaf);
             ps.executeUpdate();
-            ps.close();
-            //JOptionPane.showMessageDialog(null, "Data staf berhasil dihapus!","Delete Staf",JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Delete Staf - Data staf berhasil dihapus!");
-        }catch(SQLException se){
-            //JOptionPane.showMessageDialog(null, se.getMessage(),"Delete Staf Gagal!",JOptionPane.ERROR_MESSAGE);
-            System.out.println("Delete Staf Gagal - "+se.getMessage());
+            ps.close();            
+            //System.out.println("Delete Staf - Data staf berhasil dihapus!");
+            hasilDelete = "ok";
+        }catch(SQLException se){            
+            //System.out.println("Delete Staf Gagal - "+se.getMessage());
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -105,31 +115,37 @@ public class StafDao implements StafInterface{
             }
             rs.close();
             s.close();
+            //System.out.println("Get All Staf - Berhasil dipanggil!");
+            hasilGetAll = "ok";
             return list;
-        }catch(SQLException se){
-            //JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Staf Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get All Staf Gagal - "+se.getMessage());
+        }catch(SQLException se){            
+            //System.out.println("Get All Staf Gagal - "+se.getMessage());
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
 
     public String[] getAllNmStaf(int row) throws SQLException {
         try{
-            String[] data = new String[row];
+            //String[] data = new String[row];
+            String[] data = new String[row+1];
             Statement st = (Statement) connection.createStatement();
             ResultSet rs = st.executeQuery(getAllStaf);
             Staf sf = new Staf();
             while(rs.next()){
                 sf.setNmStaf(rs.getString("nm_staf"));
                 String nmStaf = sf.getNmStaf();
-                data[rs.getRow()-1] = nmStaf;
+                //data[rs.getRow()-1] = nmStaf;
+                data[rs.getRow()] = nmStaf;
             }
             st.close();
             rs.close();
+            hasilGetAllNmStaf = "ok";
             return data;
         }catch(Throwable t){
             //JOptionPane.showMessageDialog(null, t.getMessage(), "Get Nama Staf Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get Nama Staf Gagal - "+t.getMessage());
+            //System.out.println("Get Nama Staf Gagal - "+t.getMessage());
+            hasilGetAllNmStaf = t.getMessage();
             return null;
         }
     }
@@ -147,10 +163,12 @@ public class StafDao implements StafInterface{
             }
             ps.close();
             rs.close();
+            hasilGetIDStaf = "ok";
             return pop;
         }catch(Throwable t){
             //JOptionPane.showMessageDialog(null, t.getMessage(), "Get Nomor Spesialis Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get Nomor Spesialis Gagal - "+t.getMessage());
+            //System.out.println("Get Nomor Spesialis Gagal - "+t.getMessage());
+            hasilGetIDStaf = t.getMessage();
             return null;
         }
     }
@@ -171,10 +189,12 @@ public class StafDao implements StafInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllStafByNo = "ok";
             return list;
         } catch (Throwable t) {
             //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Staf By Nomor Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get All Staf By Nomor Gagal - "+t.getMessage());
+            //System.out.println("Get All Staf By Nomor Gagal - "+t.getMessage());
+            hasilGetAllStafByNo  = t.getMessage();
             return null;
         }
     }
@@ -195,10 +215,12 @@ public class StafDao implements StafInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllStafByNm = "ok";
             return list;
         } catch (Throwable t) {
             //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Staf By Nama Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get All Staf By Nama Gagal - "+t.getMessage());
+            //System.out.println("Get All Staf By Nama Gagal - "+t.getMessage());
+            hasilGetAllStafByNm = t.getMessage();
             return null;
         }
     }
@@ -211,7 +233,9 @@ public class StafDao implements StafInterface{
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 max = rs.getString(1);
-                if (max.length() == 1) {
+                if(max == null){
+                  hasil = "001";  
+                } else if(max.length() == 1) {
                     hasil = "00" + max;
                 } else if (max.length() == 2) {
                     hasil = "0" + max;
@@ -219,10 +243,12 @@ public class StafDao implements StafInterface{
                     hasil = max;
                 }
             }
+            hasilGetMaxNoStaf = "ok";
             return hasil;
         } catch (Throwable t) {
             //JOptionPane.showMessageDialog(null, t.getMessage(),"Get Max Nomor Staf Gagal!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Get Max Nomor Staf Gagal - "+t.getMessage());
+            //System.out.println("Get Max Nomor Staf Gagal - "+t.getMessage());
+            hasilGetMaxNoStaf = t.getMessage();
             return null;
         }
     }

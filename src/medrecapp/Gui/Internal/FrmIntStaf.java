@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package medrecapp.Gui.Internal;
 
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.StafDao;
 import medrecapp.Entity.Staf;
 import medrecapp.Services.StafService;
 import medrecapp.TabelModel.TabelModelStaf;
@@ -23,8 +24,9 @@ import medrecapp.TabelModel.TabelModelStaf;
  * @author Hady
  */
 public class FrmIntStaf extends javax.swing.JInternalFrame {
+
     StafService ss = new StafService();
-    TabelModelStaf tabelModelStaf = new TabelModelStaf();    
+    TabelModelStaf tabelModelStaf = new TabelModelStaf();
 
     /**
      * Creates new form FrmIntStaf
@@ -33,6 +35,9 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
         initComponents();
         tabelStaf.setModel(tabelModelStaf);
         tabelModelStaf.setData(ss.serviceGetAllStaf());
+        if (!StafDao.hasilGetAll.equals("ok")) {
+            JOptionPane.showMessageDialog(null, StafDao.hasilGetAll, "Get All Staf Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         tabelStaf.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -41,37 +46,43 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
                 int row = tabelStaf.getSelectedRow();
                 if (row != -1) {
 
-                    //String noStaf = tabelStaf.getValueAt(row, 0).toString();
                     String nmStaf = tabelStaf.getValueAt(row, 1).toString();
                     String alamat = tabelStaf.getValueAt(row, 2).toString();
-                    //txtNoStaf.setText(noStaf);
                     txtNamaStaf.setText(nmStaf);
                     txtAlamat.setText(alamat);
-                    
+
                     btnInsert.setEnabled(false);
                     btnUpdate.setEnabled(true);
                     btnDelete.setEnabled(true);
                 }
             }
         });
-        
+
         txtAlamat.addKeyListener(new KeyAdapter() {
+
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode()==KeyEvent.VK_TAB){                    
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_TAB) {
                     txtAlamat.transferFocus();
                     e.consume();
                 }
             }
         });
-        clear();
+
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+        txtNamaStaf.setText("");
+        txtAlamat.setText("");
+        txtCari.setText("");
+        txtNamaStaf.requestFocus();
     }
-    
-    public final void sesuaikan(){
+
+    public final void sesuaikan() {
         TableColumnModel tcm = tabelStaf.getColumnModel();
-        for(int kolom=0; kolom<tcm.getColumnCount(); kolom++){
-            int lebarKolomMax=0;
-            for(int baris=0; baris<tabelStaf.getRowCount(); baris++){
+        for (int kolom = 0; kolom < tcm.getColumnCount(); kolom++) {
+            int lebarKolomMax = 0;
+            for (int baris = 0; baris < tabelStaf.getRowCount(); baris++) {
                 TableCellRenderer tcr = tabelStaf.getCellRenderer(baris, kolom);
                 Object nilaiTable = tabelStaf.getValueAt(baris, kolom);
                 Component comp = tcr.getTableCellRendererComponent(tabelStaf, nilaiTable,
@@ -82,8 +93,8 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
             tc.setPreferredWidth(lebarKolomMax);
         }
     }
-    
-    public void clear(){
+
+    public void clear() {
         btnInsert.setEnabled(true);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
@@ -285,35 +296,62 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
         Staf s = new Staf();
-        s.setNoStaf("STF."+ss.serviceGetMaxNoStaf());
+        s.setNoStaf("STF." + ss.serviceGetMaxNoStaf());
         s.setNmStaf(txtNamaStaf.getText());
         s.setAlamatStaf(txtAlamat.getText());
         ss.serviceInsertStaf(s);
-        clear();
+
+        if (StafDao.hasilInsert.equals("ok")) {
+            JOptionPane.showMessageDialog(null, "Data staf berhasil ditambah!", "Insert Staf", JOptionPane.INFORMATION_MESSAGE);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, StafDao.hasilInsert, "Insert Staf Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         Staf s = new Staf();
-        s.setNmStaf(txtNamaStaf.getText().toUpperCase());
+        s.setNmStaf(txtNamaStaf.getText());
         s.setAlamatStaf(txtAlamat.getText());
-        
+
         int row = tabelStaf.getSelectedRow();
-        if(row != -1){
+        if (row != -1) {
             ss.serviceUpdateStaf(s, tabelStaf.getValueAt(row, 0).toString());
+
+            if (StafDao.hasilUpdate.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data staf berhasil diubah!", "Update Staf", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, StafDao.hasilUpdate, "Update Staf Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        clear();
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         int row = tabelStaf.getSelectedRow();
-        if(row == -1)
-        {
+        if (row == -1) {
             return;
         }
-        ss.serviceDeleteStaf(tabelStaf.getValueAt(row, 0).toString());
-        clear();
+
+        int pilih = JOptionPane.showConfirmDialog(rootPane,
+                "Yakin ingin mengahapus data yang dipilih?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (pilih == JOptionPane.OK_OPTION) {
+
+            ss.serviceDeleteStaf(tabelStaf.getValueAt(row, 0).toString());
+
+            if (StafDao.hasilDelete.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Data staf berhasil dihapus!", "Delete Staf", JOptionPane.INFORMATION_MESSAGE);
+                clear();
+            } else {
+                JOptionPane.showMessageDialog(null, StafDao.hasilDelete, "Delete Staf Gagal!", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -327,7 +365,7 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
         if (tabelModelStaf.getRowCount() == 0) {
             tabelModelStaf.setData(ss.serviceGetAllStafByNm(txtCari.getText()));
         }
-        
+
         txtNamaStaf.setText("");
         txtAlamat.setText("");
 
@@ -335,8 +373,6 @@ public class FrmIntStaf extends javax.swing.JInternalFrame {
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
     }//GEN-LAST:event_txtCariKeyReleased
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInsert;

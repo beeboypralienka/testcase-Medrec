@@ -90,6 +90,7 @@ public class FrmIntTindakan extends javax.swing.JInternalFrame {
         txtCari.setText("");
         tabelModelTindakan.setData(ts.serviceGetAllTindakan());
         pilihTindakan.setSelectedIndex(0);
+        sesuaikan();
     }
     
     public final void sesuaikan(){
@@ -330,7 +331,7 @@ public class FrmIntTindakan extends javax.swing.JInternalFrame {
         Tindakan t = new Tindakan();
         t.setNoTindakan("TIND."+ts.serviceGetMaxNoTindakan());
         t.setNmTindakan(txtNamaTindakan.getText());
-        t.setTndkSpesialis(id);
+        t.setTindakanSpesialis(id);
         t.setKetTindakan(txtKeterangan.getText());
         ts.serviceInsertTindakan(t);
         clear();
@@ -341,7 +342,7 @@ public class FrmIntTindakan extends javax.swing.JInternalFrame {
         String id = ss.serviceGetIDSpesialis(pilihTindakan.getSelectedItem().toString());
         Tindakan t = new Tindakan();
         t.setNmTindakan(txtNamaTindakan.getText());
-        t.setTndkSpesialis(id);
+        t.setTindakanSpesialis(id);
         t.setKetTindakan(txtKeterangan.getText());
         int row = tabelTindakan.getSelectedRow();
         if(row != -1){
