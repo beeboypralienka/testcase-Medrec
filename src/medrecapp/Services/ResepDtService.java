@@ -45,10 +45,10 @@ public class ResepDtService {
         }
     }
     
-    public void serviceUpdateResepDt(ResepDt r, String noResep){
+    public void serviceUpdateResepDt(ResepDt r, String noResep, String idObat){
         try{
             connection.setAutoCommit(false);
-            rdi.updateResepDt(r, noResep);
+            rdi.updateResepDt(r, noResep, idObat);
             connection.setAutoCommit(true);
         }catch(SQLException se){
             try{
@@ -77,9 +77,18 @@ public class ResepDtService {
         }
     }
 
-    public List serviceGetAllResep(){
+    public List serviceGetAllResepDt(){
         try{
             return rdi.getAllResepDt();
+        }catch(SQLException se){
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
+
+    public List serviceGetAllResepDtByNoResep(String noResep){
+        try{
+            return rdi.getAllResepDtByNoResep(noResep);
         }catch(SQLException se){
             Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
             return null;

@@ -20,4 +20,6 @@ public interface ResepInterface {
     public void deleteResep(String noResep)throws SQLException;
     public List getAllResep()throws SQLException;
 
+    public List getAllResepByNoResep(String noResep)throws SQLException;
+    public void tearDownResep()throws SQLException;
 }

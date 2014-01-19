@@ -39,9 +39,9 @@ public class ObatService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -55,9 +55,9 @@ public class ObatService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -71,9 +71,9 @@ public class ObatService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -81,7 +81,7 @@ public class ObatService {
         try{
             return oi.getAllObat();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -90,7 +90,7 @@ public class ObatService {
         try{
             return oi.getAllObatById(idObat);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(ObatService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }

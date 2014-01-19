@@ -8,11 +8,13 @@ package medrecapp.Gui.Internal;
 
 import com.mysql.jdbc.Connection;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import medrecapp.Dao.ObatDao;
 import medrecapp.Entity.Obat;
 import medrecapp.Services.ObatService;
 import medrecapp.TabelModel.TabelModelObat;
@@ -33,6 +35,9 @@ public class FrmIntObat extends javax.swing.JInternalFrame {
         initComponents();
         tabelObat.setModel(tabelModelObat);
         tabelModelObat.setData(os.serviceGetAllObat());
+        if(!ObatDao.hasilGetAll.equals("ok")){
+            JOptionPane.showMessageDialog(null, ObatDao.hasilGetAll,"Get All Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+        }
         sesuaikan();
 
         tabelObat.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -45,6 +50,9 @@ public class FrmIntObat extends javax.swing.JInternalFrame {
                     String keterangan = tabelObat.getValueAt(row, 1).toString();
                     txtIdObat.setText(idObat);
                     txtKeterangan.setText(keterangan);
+                    btnInsert.setEnabled(false);
+                    btnUpdate.setEnabled(true);
+                    btnDelete.setEnabled(true);
                 }
             }
         });
@@ -64,6 +72,13 @@ public class FrmIntObat extends javax.swing.JInternalFrame {
             TableColumn tc = tcm.getColumn(kolom);
             tc.setPreferredWidth(lebarKolomMax);
         }
+
+        txtIdObat.setText("");
+        txtKeterangan.setText("");
+        txtCari.setText("");
+        txtIdObat.requestFocus();
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
     }
     
     public void clear(){
@@ -73,6 +88,9 @@ public class FrmIntObat extends javax.swing.JInternalFrame {
         txtIdObat.requestFocus();
         tabelModelObat.setData(os.serviceGetAllObat());
         sesuaikan();
+        btnInsert.setEnabled(true);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
     }
 
     /**

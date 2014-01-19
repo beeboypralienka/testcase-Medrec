@@ -8,21 +8,19 @@
  *
  * Created on Dec 19, 2013, 11:15:55 AM
  */
-
 package medrecapp.Gui;
 
 import medrecapp.Gui.Internal.FrmIntSpesialis;
-import medrecapp.Gui.Internal.FrmIntListPasien;
-import medrecapp.Gui.Internal.FrmIntPerawat;
-import medrecapp.Gui.Internal.FrmIntPasien;
 import medrecapp.Gui.Internal.FrmIntJaminan;
-import medrecapp.Gui.Internal.FrmIntStaf;
-import medrecapp.Gui.Internal.FrmIntPoliklinik;
-import medrecapp.Gui.Internal.FrmIntDokter;
-import medrecapp.Gui.Internal.FrmIntObat;
-import medrecapp.Gui.Internal.FrmIntPendaftaran;
-import medrecapp.Gui.Internal.FrmIntSettingUser;
 import java.awt.Dimension;
+import medrecapp.Gui.Internal.FrmIntDokter;
+import medrecapp.Gui.Internal.FrmIntListPasien;
+import medrecapp.Gui.Internal.FrmIntObat;
+import medrecapp.Gui.Internal.FrmIntPasien;
+import medrecapp.Gui.Internal.FrmIntPendaftaran;
+import medrecapp.Gui.Internal.FrmIntPerawat;
+import medrecapp.Gui.Internal.FrmIntPoliklinik;
+import medrecapp.Gui.Internal.FrmIntStaf;
 import medrecapp.Gui.Internal.FrmIntTindakan;
 
 /**
@@ -36,8 +34,6 @@ public class FrmUtama extends javax.swing.JFrame {
     /** Creates new form FrmUtama */
     public FrmUtama() {
         initComponents();
-        menuObat.setEnabled(false);
-        menuTindakan.setEnabled(false);
     }
 
     /** This method is called from within the constructor to
@@ -52,7 +48,6 @@ public class FrmUtama extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
-        menuSettingUser = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         menuMaster = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -63,7 +58,7 @@ public class FrmUtama extends javax.swing.JFrame {
         menuSpesialis = new javax.swing.JMenuItem();
         menuJaminan = new javax.swing.JMenuItem();
         menuObat = new javax.swing.JMenuItem();
-        menuTindakan = new javax.swing.JMenuItem();
+        menuDataTindakan = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuPasien = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -84,15 +79,12 @@ public class FrmUtama extends javax.swing.JFrame {
 
         menuFile.setText("File");
 
-        menuSettingUser.setText("Setting User");
-        menuSettingUser.addActionListener(new java.awt.event.ActionListener() {
+        menuExit.setText("Exit");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSettingUserActionPerformed(evt);
+                menuExitActionPerformed(evt);
             }
         });
-        menuFile.add(menuSettingUser);
-
-        menuExit.setText("Exit");
         menuFile.add(menuExit);
 
         jMenuBar1.add(menuFile);
@@ -160,12 +152,14 @@ public class FrmUtama extends javax.swing.JFrame {
         });
         menuMaster.add(menuObat);
 
-        menuTindakan.addActionListener(new java.awt.event.ActionListener() {
+        menuDataTindakan.setText("Data Tindakan");
+        menuDataTindakan.setName("menuDataTindakan"); // NOI18N
+        menuDataTindakan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuTindakanActionPerformed(evt);
+                menuDataTindakanActionPerformed(evt);
             }
         });
-        menuMaster.add(menuTindakan);
+        menuMaster.add(menuDataTindakan);
         menuMaster.add(jSeparator2);
 
         menuPasien.setText("Data Pasien");
@@ -207,6 +201,7 @@ public class FrmUtama extends javax.swing.JFrame {
         jMenu4.setText("Poliklinik");
 
         menuPoliDalam.setText("Poliklinik Penyakit Dalam");
+        menuPoliDalam.setName("menuPoliPenyakitDalam"); // NOI18N
         menuPoliDalam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuPoliDalamActionPerformed(evt);
@@ -275,10 +270,11 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuSpesialisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSpesialisActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntSpesialis fis = new FrmIntSpesialis();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -287,11 +283,13 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPasienActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntListPasien fip = new FrmIntListPasien();
-        fip.setSize(jDesktopPane1.getSize());        /**************** MAXIMIZE Internal Frame *****************/        
+        fip.setSize(jDesktopPane1.getSize());
+        /**************** MAXIMIZE Internal Frame *****************/
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fip.getSize();
-        fip.setLocation((parentSize.width - childSize.width)/2, (parentSize.height - childSize.height)/2);        
+        fip.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fip);
         fip.show();
         fip.toFront();
@@ -300,10 +298,11 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuJaminanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJaminanActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntJaminan fis = new FrmIntJaminan();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -312,10 +311,11 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuObatActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntObat fis = new FrmIntObat();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -324,10 +324,11 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPendaftaranPasBaruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPendaftaranPasBaruActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntPasien fis = new FrmIntPasien();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -336,11 +337,12 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPoliDalamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliDalamActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "Dalam";
-        FrmIntPoliklinik fis = new FrmIntPoliklinik();        
+        FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -349,42 +351,20 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPendaftaranPasLamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPendaftaranPasLamaActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
-        FrmIntPendaftaran fis = new FrmIntPendaftaran();        
+        jDesktopPane1.repaint();
+        FrmIntPendaftaran fis = new FrmIntPendaftaran();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
     }//GEN-LAST:event_menuPendaftaranPasLamaActionPerformed
 
-    private void menuSettingUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSettingUserActionPerformed
-        // TODO add your handling code here:
-        jDesktopPane1.removeAll();
-        FrmIntSettingUser fis = new FrmIntSettingUser();        
-        Dimension parentSize = jDesktopPane1.getSize();
-        Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
-        jDesktopPane1.add(fis);
-        fis.show();
-        fis.toFront();
-    }//GEN-LAST:event_menuSettingUserActionPerformed
-
-    private void menuTindakanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTindakanActionPerformed
-        // TODO add your handling code here:
-        jDesktopPane1.removeAll();
-        FrmIntTindakan fit = new FrmIntTindakan();        
-        Dimension parentSize = jDesktopPane1.getSize();
-        Dimension childSize = fit.getSize();
-        fit.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
-        jDesktopPane1.add(fit);
-        fit.show();
-        fit.toFront();
-    }//GEN-LAST:event_menuTindakanActionPerformed
-
     private void menuPoliJantungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliJantungActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "Jantung";
         FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
@@ -398,11 +378,12 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPoliParuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliParuActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "Paru-paru";
         FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -411,11 +392,12 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPoliBedahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliBedahActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "Bedah";
         FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -424,11 +406,12 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPoliMataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliMataActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "Mata";
         FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -437,11 +420,12 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPoliTHTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPoliTHTActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         poliTujuan = "tht";
         FrmIntPoliklinik fis = new FrmIntPoliklinik();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
-        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);        
+        fis.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
         jDesktopPane1.add(fis);
         fis.show();
         fis.toFront();
@@ -450,6 +434,7 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDokterActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntDokter fis = new FrmIntDokter();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
@@ -462,6 +447,7 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerawatActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntPerawat fis = new FrmIntPerawat();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
@@ -474,6 +460,7 @@ public class FrmUtama extends javax.swing.JFrame {
     private void menuStafActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStafActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
         FrmIntStaf fis = new FrmIntStaf();
         Dimension parentSize = jDesktopPane1.getSize();
         Dimension childSize = fis.getSize();
@@ -483,17 +470,23 @@ public class FrmUtama extends javax.swing.JFrame {
         fis.toFront();
     }//GEN-LAST:event_menuStafActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new FrmUtama().setVisible(true);
-//            }
-//        });
-//    }
+    private void menuDataTindakanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDataTindakanActionPerformed
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        FrmIntTindakan fit = new FrmIntTindakan();
+        Dimension parentSize = jDesktopPane1.getSize();
+        Dimension childSize = fit.getSize();
+        fit.setLocation((parentSize.width - childSize.width) / 2, (parentSize.height - childSize.height) / 2);
+        jDesktopPane1.add(fit);
+        fit.show();
+        fit.toFront();
+    }//GEN-LAST:event_menuDataTindakanActionPerformed
 
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_menuExitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
@@ -503,6 +496,7 @@ public class FrmUtama extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JMenuItem menuDataTindakan;
     private javax.swing.JMenuItem menuDokter;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
@@ -519,10 +513,7 @@ public class FrmUtama extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuPoliMata;
     private javax.swing.JMenuItem menuPoliParu;
     private javax.swing.JMenuItem menuPoliTHT;
-    private javax.swing.JMenuItem menuSettingUser;
     private javax.swing.JMenuItem menuSpesialis;
     private javax.swing.JMenuItem menuStaf;
-    private javax.swing.JMenuItem menuTindakan;
     // End of variables declaration//GEN-END:variables
-
 }

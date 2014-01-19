@@ -40,7 +40,7 @@ public class JaminanService {
             }catch(SQLException see){
                 Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -54,9 +54,9 @@ public class JaminanService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -70,16 +70,16 @@ public class JaminanService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     public List serviceGetAllJaminan(){
         try{
             return ji.getAllJaminan();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -97,7 +97,7 @@ public class JaminanService {
         try{
             return ji.getAllJaminanById(idJaminan);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -106,7 +106,7 @@ public class JaminanService {
         try{
             return ji.getAllJaminanByNm(nmJaminan);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(JaminanService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }

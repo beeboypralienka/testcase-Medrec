@@ -16,8 +16,10 @@ import medrecapp.Entity.ResepDt;
 public interface ResepDtInterface {
 
     public void insertResepDt(ResepDt rdt)throws SQLException;
-    public void updateResepDt(ResepDt rdt, String idObat)throws SQLException;
+    public void updateResepDt(ResepDt rdt, String noResep, String idObat)throws SQLException;
     public void deleteResepDt(String idObat)throws SQLException;
     public List getAllResepDt()throws SQLException;
+
+    public List getAllResepDtByNoResep(String noResep)throws SQLException;
 
 }

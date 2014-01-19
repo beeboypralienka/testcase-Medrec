@@ -39,9 +39,9 @@ public class PasienService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -55,9 +55,9 @@ public class PasienService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -71,9 +71,9 @@ public class PasienService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -81,7 +81,7 @@ public class PasienService {
         try{
             return pi.getAllPasien();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -90,7 +90,7 @@ public class PasienService {
          try{
             return pi.getMaxNoRm();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -99,7 +99,7 @@ public class PasienService {
         try{
             return pi.getAllByNo(noRm);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -108,7 +108,7 @@ public class PasienService {
         try{
             return pi.getAllByNama(nmPas);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -117,7 +117,7 @@ public class PasienService {
         try{
             return pi.getPasienByNo(noRm);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(PasienService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }

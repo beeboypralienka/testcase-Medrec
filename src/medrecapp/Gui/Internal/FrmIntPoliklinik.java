@@ -22,9 +22,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import medrecapp.Dao.RekamMedisDao;
+import medrecapp.Gui.Dialog.FrmDlgAWTPeriksaAwal;
+import medrecapp.Gui.Dialog.FrmDlgAWTPeriksaLanjutan;
 import medrecapp.Gui.Dialog.FrmDlgPelayanan;
-import medrecapp.Gui.Dialog.FrmDlgPeriksaAwal;
-import medrecapp.Gui.Dialog.FrmDlgPeriksaLanjutan;
 import medrecapp.Gui.Dialog.FrmDlgResep;
 import medrecapp.Gui.FrmUtama;
 import medrecapp.Services.RekamMedisService;
@@ -198,6 +198,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         jLabel4.setText("Tanggal :");
 
         tabDaftar.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
+        tabDaftar.setName("panelPasienPoli"); // NOI18N
 
         tabelAntrian.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -210,11 +211,13 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelAntrian.setName("tabelAntriPoli"); // NOI18N
         jScrollPane1.setViewportView(tabelAntrian);
 
         jLabel1.setText("Masukkan No. RM / Nama Pasien");
 
         btnMasuk.setText("MASUK POLIKLINIK");
+        btnMasuk.setName("tombolMasukPoli"); // NOI18N
         btnMasuk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMasukActionPerformed(evt);
@@ -252,7 +255,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         panelAntrianLayout.setVerticalGroup(
             panelAntrianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAntrianLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelAntrianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelAntrianLayout.createSequentialGroup()
@@ -287,6 +290,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelPasienPoli.setName("tabelPasienPoli"); // NOI18N
         jScrollPane2.setViewportView(tabelPasienPoli);
 
         jLabel2.setText("Masukkan No. RM / Nama Pasien");
@@ -301,6 +305,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         jLabel5.setText(":");
 
         btnLanjutan.setText("LANJUTAN");
+        btnLanjutan.setName("tombolLanjutan"); // NOI18N
         btnLanjutan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLanjutanActionPerformed(evt);
@@ -308,6 +313,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         });
 
         btnAwal.setText("AWAL");
+        btnAwal.setName("tombolAwal"); // NOI18N
         btnAwal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAwalActionPerformed(evt);
@@ -349,7 +355,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
         panelPasienPoliLayout.setVerticalGroup(
             panelPasienPoliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPasienPoliLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPasienPoliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelPasienPoliLayout.createSequentialGroup()
@@ -393,7 +399,7 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(tglPendaftaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                .addComponent(tabDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -414,14 +420,14 @@ public class FrmIntPoliklinik extends javax.swing.JInternalFrame {
 
     private void btnLanjutanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanjutanActionPerformed
         // TODO add your handling code here:
-        FrmDlgPeriksaLanjutan fpl = new FrmDlgPeriksaLanjutan(null, true);
+        FrmDlgAWTPeriksaLanjutan fpl = new FrmDlgAWTPeriksaLanjutan(null, true);
         fpl.setVisible(true);
         refreshPasienPoli();
     }//GEN-LAST:event_btnLanjutanActionPerformed
 
     private void btnAwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAwalActionPerformed
         // TODO add your handling code here:
-        FrmDlgPeriksaAwal fpa = new FrmDlgPeriksaAwal(null, true);
+        FrmDlgAWTPeriksaAwal fpa = new FrmDlgAWTPeriksaAwal(null, true);
         fpa.setVisible(true);
         refreshPasienPoli();
     }//GEN-LAST:event_btnAwalActionPerformed

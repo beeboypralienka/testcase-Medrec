@@ -39,9 +39,9 @@ public class SpesialisService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -55,9 +55,9 @@ public class SpesialisService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -71,9 +71,9 @@ public class SpesialisService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
 
@@ -81,7 +81,7 @@ public class SpesialisService {
         try{
             return si.getAllSpesialis();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -117,7 +117,7 @@ public class SpesialisService {
         try{
             return si.getAllSpesialisById(idSpesialis);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -126,7 +126,7 @@ public class SpesialisService {
         try{
             return si.getAllSpesialisByNm(nmSpesialis);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(SpesialisService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }

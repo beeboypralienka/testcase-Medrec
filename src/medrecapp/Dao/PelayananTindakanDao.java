@@ -29,11 +29,11 @@ public class PelayananTindakanDao implements PelayananTindakanInterface {
     private final String getAllPelayananTindakan = "SELECT * FROM pelayanan_tindakan";
     private final String getAllByNoDaftar = "SELECT * FROM pelayanan_tindakan WHERE no_daftar=?";
 
-    private static String hasilInsert;
-    private static String hasilUpdate;
-    private static String hasilDelete;
-    private static String hasilGetAll;
-    private static String hasilGetAllByNoDaftar;
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetAllByNoDaftar;
 
     public PelayananTindakanDao(Connection connection) {
         this.connection = connection;

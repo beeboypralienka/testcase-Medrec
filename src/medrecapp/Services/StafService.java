@@ -39,9 +39,9 @@ public class StafService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -55,9 +55,9 @@ public class StafService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -71,9 +71,9 @@ public class StafService {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }catch(SQLException see){
-                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+                Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, see);
             }
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
         }
     }
     
@@ -81,7 +81,7 @@ public class StafService {
         try{
             return si.getAllStaf();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -108,7 +108,7 @@ public class StafService {
         try{
             return si.getAllStafByNo(noStaf);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -117,7 +117,7 @@ public class StafService {
         try{
             return si.getAllStafByNm(nmStaf);
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }
@@ -126,7 +126,7 @@ public class StafService {
         try{
             return si.getMaxNoStaf();
         }catch(SQLException se){
-            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            Logger.getLogger(StafService.class.getName()).log(Level.SEVERE, null, se);
             return null;
         }
     }

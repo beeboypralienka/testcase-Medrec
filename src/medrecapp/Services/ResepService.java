@@ -85,4 +85,29 @@ public class ResepService {
             return null;
         }
     }
+
+    public List serviceGetAllResepByNoResep(String noResep){
+        try{
+            return rsi.getAllResepByNoResep(noResep);
+        }catch(SQLException se){
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+            return null;
+        }
+    }
+
+    public void serviceTearDownResep(){
+        try{
+            connection.setAutoCommit(false);
+            rsi.tearDownResep();
+            connection.setAutoCommit(true);
+        }catch(SQLException se){
+            try{
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }catch(SQLException see){
+                Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, see);
+            }
+            Logger.getLogger(DokterService.class.getName()).log(Level.SEVERE, null, se);
+        }
+    }
 }

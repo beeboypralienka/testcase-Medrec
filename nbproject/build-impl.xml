@@ -17,7 +17,8 @@ is divided into following sections:
   - applet
   - cleanup
 
-        --><project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="MedRecApp-impl">
+        -->
+<project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="MedRecApp-impl">
     <fail message="Please build using Ant 1.7.1 or higher.">
         <condition>
             <not>
@@ -25,12 +26,57 @@ is divided into following sections:
             </not>
         </condition>
     </fail>
-    <target depends="test,jar,javadoc" description="Build and test whole project." name="default"/>
+    <!--<target depends="test,jar,javadoc" description="Build and test whole project." name="default"/> -->
+    <target depends="test,jar" description="Build and test whole project." name="default"/>
+
+    <!-- 
+                ========================
+                CREATE DAN DROP DATABASE 
+                ========================
+            -->
+    <property name="sql.driver" value="com.mysql.jdbc.Driver"/>
+    <property name="sql.url" value="jdbc:mysql://localhost:3306/medrec"/>
+    <property name="sql.user" value="root"/>
+    <property name="sql.pass" value=""/>
+    <property name="mysqladmin" value="C:\xampp\mysql\bin\mysqladmin.exe"/>
+    <property name="mysql.dbname" value="medrec"/>
+    <property name="jdbc.jar" value="lib\MySQLDriver\mysql-connector-java-5.1.6-bin.jar" />
+
+    <target name="create-db">
+        <exec executable="${mysqladmin}">
+            <arg value="--user=${sql.user}"/>
+            <arg value="--password=${sql.pass}" />
+            <arg value="CREATE"/>
+            <arg value="${mysql.dbname}"/>
+        </exec>
+        <sql driver="${sql.driver}"
+            url="${sql.url}"
+            userid="${sql.user}"
+            password="${sql.pass}"
+            classpath="${jdbc.jar}"
+            src="medrec.sql">        
+        </sql>
+    </target>
+
+    <target name="drop-db">        
+        <sql driver="${sql.driver}"
+            url="${sql.url}"
+            userid="${sql.user}"
+            password="${sql.pass}">
+            <classpath>
+                <pathelement location="${jdbc.jar}"/>
+            </classpath>            
+            DROP DATABASE medrec;
+        </sql>
+    </target>
+
     <!-- 
                 ======================
                 INITIALIZATION SECTION 
                 ======================
             -->
+
+
     <target name="-pre-init">
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
@@ -504,6 +550,7 @@ is divided into following sections:
         <property name="ap.cmd.line.internal" value=""/>
     </target>
     <target depends="-pre-init,-init-private,-init-libraries,-init-user,-init-project,-do-init,-post-init,-init-check,-init-macrodef-property,-init-macrodef-javac,-init-macrodef-junit,-init-macrodef-nbjpda,-init-macrodef-debug,-init-macrodef-java,-init-presetdef-jar,-init-ap-cmdline" name="init"/>
+
     <!--
                 ===================
                 COMPILATION SECTION
@@ -640,7 +687,16 @@ is divided into following sections:
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
+
+
+    <!--
     <target depends="init,compile,-pre-jar,-do-jar-with-manifest,-do-jar-without-manifest,-do-jar-with-mainclass,-do-jar-with-libraries-and-splashscreen,-do-jar-with-libraries,-post-jar" description="Build JAR." name="jar"/>
+    -->
+    <target depends="-do-jar-with-libraries" description="Build JAR." name="jar"/>
+
+
+
+
     <!--
                 =================
                 EXECUTION SECTION
@@ -710,6 +766,7 @@ is divided into following sections:
                 JAVADOC SECTION
                 ===============
             -->
+             
     <target depends="init" if="have.sources" name="-javadoc-build">
         <mkdir dir="${dist.javadoc.dir}"/>
         <javadoc additionalparam="${javadoc.additionalparam}" author="${javadoc.author}" charset="UTF-8" destdir="${dist.javadoc.dir}" docencoding="UTF-8" encoding="${javadoc.encoding.used}" failonerror="true" noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}" notree="${javadoc.notree}" private="${javadoc.private}" source="${javac.source}" splitindex="${javadoc.splitindex}" use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}">
@@ -736,6 +793,8 @@ is divided into following sections:
         <nbbrowse file="${dist.javadoc.dir}/index.html"/>
     </target>
     <target depends="init,-javadoc-build,-javadoc-browse" description="Build Javadoc." name="javadoc"/>
+
+
     <!--
                 =========================
                 JUNIT COMPILATION SECTION
@@ -795,7 +854,15 @@ is divided into following sections:
     </target>
     <target depends="init" if="have.tests" name="test-report"/>
     <target depends="init" if="netbeans.home+have.tests" name="-test-browse"/>
+
+
+    <!--
     <target depends="init,compile-test,-pre-test-run,-do-test-run,test-report,-post-test-run,-test-browse" description="Run unit tests." name="test"/>
+    -->
+    <target depends="create-db,-do-test-run,drop-db" description="Run unit tests." name="test"/>
+
+
+
     <target depends="init" if="have.tests" name="-pre-test-run-single">
         <mkdir dir="${build.test.results.dir}"/>
     </target>

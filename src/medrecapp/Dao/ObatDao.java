@@ -31,6 +31,12 @@ public class ObatDao implements ObatInterface{
     private final String getAllObat = "SELECT * FROM obat";
 
     private final String getAllByIdObat = "SELECT * FROM obat WHERE id_obat LIKE ?";
+
+    public static String hasilInsert;
+    public static String hasilUpdate;
+    public static String hasilDelete;
+    public static String hasilGetAll;
+    public static String hasilGetAllObatById;
     
     public ObatDao(Connection connection){
         this.connection = connection;
@@ -43,9 +49,11 @@ public class ObatDao implements ObatInterface{
             ps.setString(2, ob.getKetObat());
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data obat berhasil ditambah","Insert Obat", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data obat berhasil ditambah","Insert Obat", JOptionPane.INFORMATION_MESSAGE);
+            hasilInsert = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Obat Gagal", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(),"Insert Obat Gagal", JOptionPane.ERROR_MESSAGE);
+            hasilInsert = se.getMessage();
         }
     }
 
@@ -56,9 +64,11 @@ public class ObatDao implements ObatInterface{
             ps.setString(2, idObat);
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data obat berhasil diubah","Update Obat",JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data obat berhasil diubah","Update Obat",JOptionPane.INFORMATION_MESSAGE);
+            hasilUpdate = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Update Obat Gagal",JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(),"Update Obat Gagal",JOptionPane.ERROR_MESSAGE);
+            hasilUpdate = se.getMessage();
         }
     }
 
@@ -68,9 +78,11 @@ public class ObatDao implements ObatInterface{
             ps.setString(1, idObat);
             ps.executeUpdate();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Data Obat Berhasil dihapus","Delete Obat",JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Data Obat Berhasil dihapus","Delete Obat",JOptionPane.INFORMATION_MESSAGE);
+            hasilDelete = "ok";
         }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Delete Obat Gagal",JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, se.getMessage(),"Delete Obat Gagal",JOptionPane.ERROR_MESSAGE);
+            hasilDelete = se.getMessage();
         }
     }
 
@@ -87,9 +99,10 @@ public class ObatDao implements ObatInterface{
             }
             rs.close();
             s.close();
+            hasilGetAll = "ok";
             return list;
-        }catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(),"Get All Dokter Gagal!", JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException se){            
+            hasilGetAll = se.getMessage();
             return null;
         }
     }
@@ -109,10 +122,11 @@ public class ObatDao implements ObatInterface{
             }
             ps.close();
             rs.close();
+            hasilGetAllObatById = "ok";
             return list;
         } catch (Throwable t) {
-            JOptionPane.showMessageDialog(null, t.getMessage(),
-                    "Get All Obat By ID Gagal!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, t.getMessage(),"Get All Obat By ID Gagal!", JOptionPane.ERROR_MESSAGE);
+            hasilGetAllObatById = t.getMessage();
             return null;
         }
     }
